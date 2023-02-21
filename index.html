@@ -80,14 +80,127 @@
 
     <script>
         //DOM -> Modelo de Objetos del Documento
-        let $frmAlumno = document.querySelector("#frmAlumnos");
-        console.log( $frmAlumno, frmAlumnos );
+        // let $frmAlumno = document.querySelector("#frmAlumnos");
+        // console.log( $frmAlumno, frmAlumnos );
         
-        frmAlumnos.addEventListener('submit',e=>{
-            e.preventDefault();
+        // frmAlumnos.addEventListener('submit',e=>{
+        //     e.preventDefault();
 
-            console.log( txtCodigoAlumno.value, txtNombreAlumno.value);
-        });
+        //     console.log( txtCodigoAlumno.value, txtNombreAlumno.value);
+        // });
+
+        const { createApp } = Vue
+
+        createApp({
+            data(){
+                return{
+                    db : '',
+                    buscar : '',
+                    docentes : [],
+                    accion : 'nuevo',
+                    alumno: {
+                        idalumno : 0,
+                        codigo : '',
+                        nombre : '',
+                        direccion : '',
+                        municipio : '',
+                        departamento : '',
+                        telefono : '',
+                        fechaNacimiento : '',
+                        sexo : ''
+
+                    }
+
+                }
+            },
+            methods:{
+                //Creamos las variables de alumno
+                nuevoAlumno(){
+                    this.accion = 'nuevo';
+                    this.alumno.idAlumno = '';
+                    this.alumno.codigo = '';
+                    this.alumno.nombre = '';
+                    this.alumno.direccion = '';
+                    this.alumno.municipio = '';
+                    this.alumno.departamento = '';
+                    this.alumno.telefono = '';
+                    this.alumno.fechaNacimiento = '';
+                    this.alumno.sexo = '';
+
+                },
+                ///////////////////////////////////////
+
+                //Para poder modificar
+                modificarAlumno(){
+                    this.accion = 'modificar';
+                    this.alumno = alumno;
+                },
+                /////////////////////////////////////////
+
+                //Para poder guardar los datos de alumno 
+                guardarAlumno(){
+                    if(this.alumno.nombre == '' ||
+                    this.alumno.codigo == ''){
+                        console.log('Por favor ingrese los datos solicitados')
+                    }
+                },
+                ////////////////////////////////////////////
+
+                //Para mostrar los alumnos guardados
+                listarAlumnos(){
+                    let store = this.abrirStore('tblalumnos', 'readonly'),
+                    data = store.getAll();
+                    data.onsuccess = resp => {
+                        this.alumnos = data.result
+                        .filter(alumno => alumno.nombre.toLowerCase().indexOf(this.buscar.toLowerCase()) >- 1 ||
+                        alumno.codigo.indexOf(this.buscar) >- 1) ;
+                            
+                    };
+                },
+                ////////////////////////////////////////////////
+
+                //Abrimos la base de datos
+                abrirDB(){
+                let indexDB = indexedDB.open('db_sistema_academico', 1);
+                indexDB.onupgradeneeded = e => {
+                    let req = e.target.result,
+                    tbldocentes = req.createObjectStore('tblalumnos',{
+                        keyPath: 'idAlumno'
+                    });
+
+                    tblalumnos.createIndex('idAlumno', 'idAlumno', {
+                    unique : true
+                    });
+                    tblalumnos.createIndex('codigo', 'codigo', {
+                        unique : true
+                    });
+                };
+
+                indexDB.onsuccess = e => {
+                    db = e.target.result;
+                    this.listarAlumnos();
+                };
+
+                indexDB.onerror = e => {
+                    console.error('ERROR al crear, abrir DB', e);
+                };
+
+                },
+                ////////////////////////////////////////////////////
+                
+                //Para abrir la DB en el modo que se necesita
+                abrirStore(store ,modo){
+                    let ltx = db.transaction(store, modo);
+                    return ltx.objecStore(store);
+                }
+                ////////////////////////////////////////////////////
+            },
+            created(){
+
+            }
+
+        }).mount('#app')
+
     </script>
 </body>
 </html>
