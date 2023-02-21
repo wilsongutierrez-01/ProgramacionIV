@@ -6,79 +6,202 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
 
-    <title>Primer Proyecto en HTML</title>
+    <title>Primer Parcial</title>
 </head>
 <body><!-- Contenido de la pagina html -->
     <div class="container" id="app">
-        <div class="card border-danger" style="max-width: 36rem;">
-            <div class="card-header bg-danger text-white   " >Registro Estudiantes</div>
-            <div class="card-body">
-                <form id="frmAlumno" @submit.prevent="guardarAlumno">
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">Codigo:</div>
-                        <div class="col-9 col-md-3">
-                            <input type="text" class="form-control" v-model="alumno.codigo" name="txtCodigoAlumno" id="txtCodigoAlumno">
-                        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">REGISTRAR AUTORES</div>
+                    <div class="card-body">
+                        <form id="frmAutor" @submit.prevent="guardarAutor" @reset.prevent="nuevoAutor()">
+                            <div class="row p-1">
+                                <div class="col-3 col-md-2">CODIGO:</div>
+                                <div class="col-9 col-md-3">
+                                    <input required pattern="[0-9]{3}" class="form-control" type="text" v-model="autor.codigo">
+                                </div>
+                            </div>
+                            <div class="row p-1">
+                                <div class="col-3 col-md-2">NOMBRE:</div>
+                                <div class="col-9 col-md-6">
+                                    <input required pattern="[a-zA-Z ]{3,65}" class="form-control" type="text" v-model="autor.nombre">
+                                </div>
+                            </div>
+                            <div class="row p-1">
+                                <div class="col-3 col-md-2">Pais:</div>
+                                <div class="col-9 col-md-6">
+                                    <input  class="form-control" type="text" v-model="autor.pais">
+                                </div>
+                            </div>
+                            <div class="row p-1">
+                                <div class="col-3 col-md-2">Telefono:</div>
+                                <div class="col-9 col-md-6">
+                                    <input  class="form-control" type="text" v-model="autor.telefono">
+                                </div>
+                            </div>
+                            <div class="row p-1">
+                                <div class="col col-md-6">
+                                    <input class="btn btn-success" type="submit" value="Guardar Datos">
+                                </div>
+                                <div class="col col-md-6">
+                                    <input class="btn btn-warning" type="reset" value="Nuevo Registro">
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">Nombre:</div>
-                        <div class="col-9 col-md-6">
-                            <input class="form-control" type="text" v-model="alumno.nombre" name="txtNombreAlumno" id="txtNombreAlumno">
-                        </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card text-bg-light">
+                    <div class="card-header">CONSULTA AUTOR</div>
+                    <div class="card-body">
+                        <form>
+                            <table class="table table-dark table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>BUSCAR:</th>
+                                        <th colspan="2"><input type="text" @keyup="listarAutor()" v-model="buscar" 
+                                            class="form-control" placeholder="Busar por nombre" ></th>
+                                    </tr>
+                                    <tr>
+                                        <th>CODIGO</th>
+                                        <th colspan="2">NOMBRE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="autor in autores" @click='modificarAutor(autor)' :key="autor.idAutor">
+                                        <td>{{autor.codigo}}</td>
+                                        <td>{{autor.nombre}}</td>
+                                        <td><button @click.prevent="eliminarAutor(autor)" class="btn btn-danger">Eliminar</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">Direccion:</div>
-                        <div class="col-9 col-md-6">
-                            <input type="text" class="form-control" v-model="alumno.direccion" name="txtDireccionAlumno" id="txtDireccionAlumno">
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">Municipio:</div>
-                        <div class="col-9 col-md-6">
-                            <input type="text" class="form-control" v-model="alumno.municipio" name="txtMunicipioAlumno" id="txtMunicipioAlumno">
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">Departamento:</div>
-                        <div class="col-9 col-md-6">
-                            <input type="text" class="form-control" v-model="alumno.departamento" name="txtDepartamentoAlumno" id="txtDepartamentoAlumno">
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">Telefono:</div>
-                        <div class="col-9 col-md-6">
-                            <input type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="form-control" v-model="alumno.telefono" name="txtTelefonoAlumno" id="txtTelefonoAlumno">
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">Fecha de Nacimiento:</div>
-                        <div class="col-9 col-md-6">
-                            <input type="date" class="form-control" v-model="alumno.nacimiento" name="txtNacimientoAlumno" id="txtNacimientoAlumno">
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">Sexo:</div>
-                        <div class="col-9 col-md-2">
-                            <input type="text" pattern="[M]{1}||[F]{1}" class="form-control" v-model="alumno.sexo" name="txtSexoAlumno" id="txtSexoAlumno">
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col col-md-6">
-                            <input class="btn btn-success" type="reset" value="Nuevo Registro">
-                        </div>
-                        <div class="col col-md-6">
-                            <input class="btn btn-warning" type="submit" value="Guardar Datos">
-                        </div>
-                    </div>
-                </form>
-                
+                </div>
             </div>
         </div>
+        
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <script>
+        const {
+            createApp
+        } = Vue;
+        var db;
+        createApp({
+            data(){
+                return {
+                    db  : '',
+                    buscar : '',
+                    autores : [],
+                    accion : 'nuevo',
+                    autor : {
+                        idAutor : 0,
+                        codigo : '',
+                        nombre : '',
+                        pais : '',
+                        telefono : '',
+                    }
+                }
+            },
+            methods: {
+
+                nuevoAutor(){
+                    this.accion = 'nuevo';
+                    this.autor.idAutor = '';
+                    this.autor.codigo = '';
+                    this.autor.nombre = '';
+                    this.autor.pais = '';
+                    this.autor.telefono = '';
+                },
+
+                modifcarAutor(autor){
+                    this.accion = 'modificar';
+                    this.autor = autor;
+
+                },
+
+                guardarAutor(){
+                    if( this.autor.nombre=='' || 
+                    this.autor.codigo=='' ){
+                    console.log( 'Por favor ingrese los datos correspondientes' );
+                    return;
+                    }
+                    let store = this.abrirStore("tblautores", 'readwrite');
+                    if( this.accion==='nuevo' ){
+                        this.autor.idAutor = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
+                    }
+                    let query = store.put( JSON.parse( JSON.stringify(this.autor) ));
+                    query.onsuccess = resp=>{
+                        this.nuevoAutor();
+                        this.listarAutor();
+                    };
+                    query.onerror = err=>{
+                        console.error('ERROR al guardar autor', err);
+                    };
+
+                },
+                
+                listarAutor(){
+                    let store = this.abrirStore('tblautores', 'readonly'),
+                    data = store.getAll();
+                    data.onsuccess = resp=>{
+                    this.autores = data.result
+                    .filter(autor=>autor.nombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || 
+                        autor.codigo.indexOf(this.buscar)>-1);
+                    };
+                },
+
+                eliminarAutor(){
+                    if( confirm(`Esta seguro de eliminar el autor ${autor.nombre}?`) ){
+                        let store = this.abrirStore('tblautores', 'readwrite'),
+                            req = store.delete(autor.idAutor);
+                        req.onsuccess = res=>{
+                            this.listarAutor();
+                        };
+                        req.onerror = err=>{
+                            console.error('ERROR al eliminar autor');
+                        };
+                    }
+
+                },
+
+                abrirBD() {
+                    let indexDB = indexedDB.open('db_sistema', 2);
+                    indexDB.onupgradeneeded = e => {
+                        let req = e.target.result,
+                            tblautores = req.createObjectStore('tblautores', {
+                                keyPath: 'idAutor'
+                            });
+
+                        tblautores.createIndex('idAutor', 'idAutor', {
+                            unique: true
+                        });
+                        tblautores.createIndex('codigo', 'codigo', {
+                            unique: true
+                        });
+                    };
+                    indexDB.onsuccess = e => {
+                        db = e.target.result;
+                        // this.listarDocentes();
+                    };
+                    indexDB.onerror = e => {
+                        console.error('ERROR al crear, abrir la BD', e);
+                    };
+                },
+                abrirStore(store, modo) {
+                    let ltx = db.transaction(store, modo);
+                    return ltx.objectStore(store);
+                }
+            },
+            created() {
+                this.abrirBD();
+            }
+        }).mount('#app')
         //DOM -> Modelo de Objetos del Documento
         // let $frmAlumno = document.querySelector("#frmAlumnos");
         // console.log( $frmAlumno, frmAlumnos );
@@ -89,117 +212,108 @@
         //     console.log( txtCodigoAlumno.value, txtNombreAlumno.value);
         // });
 
-        const { createApp } = Vue
+        // const { createApp } = Vue
 
-        createApp({
-            data(){
-                return{
-                    db : '',
-                    buscar : '',
-                    docentes : [],
-                    accion : 'nuevo',
-                    alumno: {
-                        idalumno : 0,
-                        codigo : '',
-                        nombre : '',
-                        direccion : '',
-                        municipio : '',
-                        departamento : '',
-                        telefono : '',
-                        fechaNacimiento : '',
-                        sexo : ''
+        // createApp({
+        //     data(){
+        //         return{
+        //             db : '',
+        //             buscar : '',
+        //             autores : [],
+        //             accion : 'nuevo',
+        //             autor: {
+        //                 idAutor : 0,
+        //                 codigo : '',
+        //                 nombre : '',
+        //                 pais : '',
+        //                 telefono : ''
+        //             }
 
-                    }
+        //         }
+        //     },
+        //     methods:{
+        //         //Creamos las variables de alumno
+        //         nuevoAutor(){
+        //             this.accion = 'nuevo';
+        //             this.autor.idAutor = '';
+        //             this.autor.codigo = '';
+        //             this.autor.nombre = '';
+        //             this.autor.pais = ' ';
+        //             this.autor.telefono = '';
 
-                }
-            },
-            methods:{
-                //Creamos las variables de alumno
-                nuevoAlumno(){
-                    this.accion = 'nuevo';
-                    this.alumno.idAlumno = '';
-                    this.alumno.codigo = '';
-                    this.alumno.nombre = '';
-                    this.alumno.direccion = '';
-                    this.alumno.municipio = '';
-                    this.alumno.departamento = '';
-                    this.alumno.telefono = '';
-                    this.alumno.fechaNacimiento = '';
-                    this.alumno.sexo = '';
+        //         },
+        //         ///////////////////////////////////////
 
-                },
-                ///////////////////////////////////////
+        //         //Para poder modificar
+        //         modificarAutor(){
+        //             this.accion = 'modificar';
+        //             this.autor = autor;
+        //         },
+        //         /////////////////////////////////////////
 
-                //Para poder modificar
-                modificarAlumno(){
-                    this.accion = 'modificar';
-                    this.alumno = alumno;
-                },
-                /////////////////////////////////////////
+        //         //Para poder guardar los datos de alumno 
+        //         guardarAutor(){
+        //             if(this.autor.nombre == '' ||
+        //             this.autor.codigo == ''){
+        //                 console.log('Por favor ingrese los datos solicitados')
+        //             }
+        //         },
+        //         ////////////////////////////////////////////
 
-                //Para poder guardar los datos de alumno 
-                guardarAlumno(){
-                    if(this.alumno.nombre == '' ||
-                    this.alumno.codigo == ''){
-                        console.log('Por favor ingrese los datos solicitados')
-                    }
-                },
-                ////////////////////////////////////////////
-
-                //Para mostrar los alumnos guardados
-                listarAlumnos(){
-                    let store = this.abrirStore('tblalumnos', 'readonly'),
-                    data = store.getAll();
-                    data.onsuccess = resp => {
-                        this.alumnos = data.result
-                        .filter(alumno => alumno.nombre.toLowerCase().indexOf(this.buscar.toLowerCase()) >- 1 ||
-                        alumno.codigo.indexOf(this.buscar) >- 1) ;
+        //         //Para mostrar los alumnos guardados
+        //         listarAutor(){
+        //             let store = this.abrirStore('tblautores', 'readonly'),
+        //             data = store.getAll();
+        //             data.onsuccess = resp => {
+        //                 this.autores = data.result
+        //                 .filter(autor => alumno.nombre.toLowerCase().indexOf(this.buscar.toLowerCase()) >- 1 ||
+        //                 alumno.codigo.indexOf(this.buscar) >- 1) ;
                             
-                    };
-                },
-                ////////////////////////////////////////////////
+        //             };
+        //         },
+        //         ////////////////////////////////////////////////
 
-                //Abrimos la base de datos
-                abrirDB(){
-                let indexDB = indexedDB.open('db_sistema_academico', 1);
-                indexDB.onupgradeneeded = e => {
-                    let req = e.target.result,
-                    tbldocentes = req.createObjectStore('tblalumnos',{
-                        keyPath: 'idAlumno'
-                    });
+        //         //Abrimos la base de datos
+        //         abrirDB(){
+        //         let indexDB = indexedDB.open('db_sistema_academico', 1);
+        //         indexDB.onupgradeneeded = e => {
+        //             let req = e.target.result,
+        //             tbldocentes = req.createObjectStore('tblautores',{
+        //                 keyPath: 'idAutor'
+        //             });
 
-                    tblalumnos.createIndex('idAlumno', 'idAlumno', {
-                    unique : true
-                    });
-                    tblalumnos.createIndex('codigo', 'codigo', {
-                        unique : true
-                    });
-                };
+        //             tblalumnos.createIndex('idAutor', 'idAutor', {
+        //             unique : true
+        //             });
+        //             tblalumnos.createIndex('codigo', 'codigo', {
+        //                 unique : true
+        //             });
+        //         };
 
-                indexDB.onsuccess = e => {
-                    db = e.target.result;
-                    this.listarAlumnos();
-                };
+        //         indexDB.onsuccess = e => {
+        //             db = e.target.result;
+        //             this.listarAutor();
+        //         };
 
-                indexDB.onerror = e => {
-                    console.error('ERROR al crear, abrir DB', e);
-                };
+        //         indexDB.onerror = e => {
+        //             console.error('ERROR al crear, abrir DB', e);
+        //         };
 
-                },
-                ////////////////////////////////////////////////////
+        //         },
+        //         ////////////////////////////////////////////////////
                 
-                //Para abrir la DB en el modo que se necesita
-                abrirStore(store ,modo){
-                    let ltx = db.transaction(store, modo);
-                    return ltx.objecStore(store);
-                }
-                ////////////////////////////////////////////////////
-            },
-            created(){
+        //         //Para abrir la DB en el modo que se necesita
+        //         abrirStore(store ,modo){
+        //             let ltx = db.transaction(store, modo);
+        //             return ltx.objecStore(store);
+        //         }
+        //         ////////////////////////////////////////////////////
+        //     },
+        //     created(){
 
-            }
+        //     }
 
-        }).mount('#app')
+        // }).mount('#app')
 
     </script>
 </body>
