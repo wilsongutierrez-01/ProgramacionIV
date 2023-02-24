@@ -12,8 +12,8 @@
     <div class="container" id="app">
         <div class="row">
             <div class="col-12 col-md-6">
-                <div class="card border-primary">
-                    <div class="card-header bg-primary text-white">REGISTRAR AUTORES</div>
+                <div class="card border-danger">
+                    <div class="card-header bg-success text-black">REGISTRAR AUTORES</div>
                     <div class="card-body">
                         <form id="frmAutor" @submit.prevent="guardarAutor" @reset.prevent="nuevoAutor()">
                             <div class="row p-1">
@@ -202,119 +202,8 @@
                 this.abrirBD();
             }
         }).mount('#app')
-        //DOM -> Modelo de Objetos del Documento
-        // let $frmAlumno = document.querySelector("#frmAlumnos");
-        // console.log( $frmAlumno, frmAlumnos );
-        
-        // frmAlumnos.addEventListener('submit',e=>{
-        //     e.preventDefault();
 
-        //     console.log( txtCodigoAlumno.value, txtNombreAlumno.value);
-        // });
-
-        // const { createApp } = Vue
-
-        // createApp({
-        //     data(){
-        //         return{
-        //             db : '',
-        //             buscar : '',
-        //             autores : [],
-        //             accion : 'nuevo',
-        //             autor: {
-        //                 idAutor : 0,
-        //                 codigo : '',
-        //                 nombre : '',
-        //                 pais : '',
-        //                 telefono : ''
-        //             }
-
-        //         }
-        //     },
-        //     methods:{
-        //         //Creamos las variables de alumno
-        //         nuevoAutor(){
-        //             this.accion = 'nuevo';
-        //             this.autor.idAutor = '';
-        //             this.autor.codigo = '';
-        //             this.autor.nombre = '';
-        //             this.autor.pais = ' ';
-        //             this.autor.telefono = '';
-
-        //         },
-        //         ///////////////////////////////////////
-
-        //         //Para poder modificar
-        //         modificarAutor(){
-        //             this.accion = 'modificar';
-        //             this.autor = autor;
-        //         },
-        //         /////////////////////////////////////////
-
-        //         //Para poder guardar los datos de alumno 
-        //         guardarAutor(){
-        //             if(this.autor.nombre == '' ||
-        //             this.autor.codigo == ''){
-        //                 console.log('Por favor ingrese los datos solicitados')
-        //             }
-        //         },
-        //         ////////////////////////////////////////////
-
-        //         //Para mostrar los alumnos guardados
-        //         listarAutor(){
-        //             let store = this.abrirStore('tblautores', 'readonly'),
-        //             data = store.getAll();
-        //             data.onsuccess = resp => {
-        //                 this.autores = data.result
-        //                 .filter(autor => alumno.nombre.toLowerCase().indexOf(this.buscar.toLowerCase()) >- 1 ||
-        //                 alumno.codigo.indexOf(this.buscar) >- 1) ;
-                            
-        //             };
-        //         },
-        //         ////////////////////////////////////////////////
-
-        //         //Abrimos la base de datos
-        //         abrirDB(){
-        //         let indexDB = indexedDB.open('db_sistema_academico', 1);
-        //         indexDB.onupgradeneeded = e => {
-        //             let req = e.target.result,
-        //             tbldocentes = req.createObjectStore('tblautores',{
-        //                 keyPath: 'idAutor'
-        //             });
-
-        //             tblalumnos.createIndex('idAutor', 'idAutor', {
-        //             unique : true
-        //             });
-        //             tblalumnos.createIndex('codigo', 'codigo', {
-        //                 unique : true
-        //             });
-        //         };
-
-        //         indexDB.onsuccess = e => {
-        //             db = e.target.result;
-        //             this.listarAutor();
-        //         };
-
-        //         indexDB.onerror = e => {
-        //             console.error('ERROR al crear, abrir DB', e);
-        //         };
-
-        //         },
-        //         ////////////////////////////////////////////////////
-                
-        //         //Para abrir la DB en el modo que se necesita
-        //         abrirStore(store ,modo){
-        //             let ltx = db.transaction(store, modo);
-        //             return ltx.objecStore(store);
-        //         }
-        //         ////////////////////////////////////////////////////
-        //     },
-        //     created(){
-
-        //     }
-
-        // }).mount('#app')
-
+    
     </script>
 </body>
 </html>
