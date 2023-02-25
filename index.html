@@ -1,240 +1,168 @@
-<!DOCTYPE html><!-- Definicion de tipo de documento -->
-<html lang="en"><!-- Apertura de la pagina html -->
-<head><!-- Encabezado de la pagina html -->
-    <meta charset="UTF-8"><!-- Codificacion de Caracteres especiales  -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"><!-- IE -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio II</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-
-    <title>Segundo Laboratorio</title>
 </head>
-<body><!-- Contenido de la pagina html -->
-    <div class="container" id="app">
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="card border-primary">
-                    <div class="card-header bg-primary text-white">REGISTRAR ALUMNOS</div>
-                    <div class="card-body">
-                        <form id="frmAlumno" @submit.prevent="guardarAlumno" @reset.prevent="nuevoAlumno()">
-                            <div class="row p-1">
-                                <div class="col-3 col-md-2">CODIGO:</div>
-                                <div class="col-9 col-md-3">
-                                    <input required pattern="[A-Z]{4}[0-9]{6}" class="form-control" type="text" v-model="alumno.codigo">
-                                </div>
-                            </div>
-                            <div class="row p-1">
-                                <div class="col-3 col-md-2">NOMBRE:</div>
-                                <div class="col-9 col-md-6">
-                                    <input required pattern="[a-zA-Z ]{3,65}" class="form-control" type="text" v-model="alumno.nombre">
-                                </div>
-                            </div>
-                            <div class="row p-1">
-                                <div class="col-3 col-md-2">DIRECCION:</div>
-                                <div class="col-9 col-md-6">
-                                    <input  class="form-control" type="text" v-model="alumno.direccion">
-                                </div>
-                            </div>
-                            <div class="row p-1">
-                                <div class="col-3 col-md-2">MUNICIPIO:</div>
-                                <div class="col-9 col-md-6">
-                                    <input  class="form-control" type="text" v-model="alumno.municipio">
-                                </div>
-                            </div>
-                            <div class="row p-1">
-                                <div class="col-3 col-md-2">DEPARTAMENTO:</div>
-                                <div class="col-9 col-md-6">
-                                    <input  class="form-control" type="text" v-model="alumno.departamento">
-                                </div>
-                            </div>
-                            <div class="row p-1">
-                                <div class="col-3 col-md-2">Telefono:</div>
-                                <div class="col-9 col-md-6">
-                                    <input  class="form-control" type="text" v-model="alumno.telefono">
-                                </div>
-                            </div>
-                            <div class="row p-1">
-                                <div class="col-3 col-md-2">FECHA NACIMIENTO:</div>
-                                <div class="col-9 col-md-6">
-                                    <input  class="form-control" type="date" v-model="alumno.fechaNacimiento">
-                                </div>
-                                <div class="row p-1">
-                                    <div class="col-3 col-md-2">SEXO:</div>
-                                    <div class="col-9 col-md-6">
-                                        <input  class="form-control" type="text" v-model="alumno.sexo">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row p-1">
-                                <div class="col col-md-6">
-                                    <input class="btn btn-success" type="submit" value="Guardar Datos">
-                                </div>
-                                <div class="col col-md-6">
-                                    <input class="btn btn-warning" type="reset" value="Nuevo Registro">
-                                </div>
-                            </div>
-                        </form>
+
+<body>
+    <div class="container-fluid" id="app">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">::.. SISTEMA ACADEMICO ..::</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link" @click="abrirFormulario('docente')">Docentes</a>
+                        <a class="nav-link" @click="abrirFormulario('alumno')">Alumnos</a>
+                        <a class="nav-link" @click="abrirFormulario('materia')">Materias</a>
+                        <a class="nav-link" @click="abrirFormulario('matricula')">Matricula</a>
+                        <a class="nav-link" @click="abrirFormulario('inscripcion')">Inscripcion</a>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6">
-                <div class="card text-bg-light">
-                    <div class="card-header">CONSULTA ALUMNOS</div>
-                    <div class="card-body">
-                        <form>
-                            <table class="table table-dark table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>BUSCAR:</th>
-                                        <th colspan="2"><input type="text" @keyup="listarAlumno()" v-model="buscar" 
-                                            class="form-control" placeholder="Busar por nombre" ></th>
-                                    </tr>
-                                    <tr>
-                                        <th>CODIGO</th>
-                                        <th colspan="2">NOMBRE</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="alumno in alumnos" @click='modificarAlumno(alumno)' :key="alumno.idAlumno">
-                                        <td>{{alumno.codigo}}</td>
-                                        <td>{{alumno.nombre}}</td>
-                                        <td><button @click.prevent="eliminarAlumno(alumno)" class="btn btn-danger">Eliminar</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                </div>
-            </div>
+        </nav>
+        <div id="appSistema">
+            <component-docentes ref="docente" v-show="forms['docente'].mostrar"></component-docentes>
+            <component-materias ref="materia" v-show="forms['materia'].mostrar"></component-materias>
+            <component-alumnos ref="alumno" v-show="forms['alumno'].mostrar"></component-alumnos>
         </div>
-        
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
-    <script>
-        const {
-            createApp
-        } = Vue;
-        var db;
-        createApp({
-            data(){
-                return {
-                    db  : '',
-                    buscar : '',
-                    alumnos : [],
-                    accion : 'nuevo',
-                    alumno : {
-                        idAlumno : '',
-                        codigo : '',
-                        nombre : '',
-                        direccion : '',
-                        municipio : '',
-                        departamento : '',                        
-                        telefono : '',
-                        fechaNacimiento : '',
-                        sexo : '',
-                    }
-                }
-            },
-            methods: {
-
-                nuevoAlumno(){
-                    this.accion = 'nuevo';
-                    this.alumno.idAlumno = '';
-                    this.alumno.codigo = '';
-                    this.alumno.nombre = '';
-                    this.alumno.direccion = '';
-                    this.alumno.municipio = '';
-                    this.alumno.departamento = '';
-                    this.alumno.telefono = '';
-                    this.alumno.fechaNacimiento = '';
-                    this.alumno.sexo = '';
-                },
-
-                modificarAlumno(alumno){
-                    this.accion = 'modificar';
-                    this.alumno = alumno;
-
-                },
-
-                guardarAlumno(){
-                    if( this.alumno.nombre=='' || 
-                    this.alumno.codigo=='' ){
-                    console.log( 'Por favor ingrese los datos correspondientes' );
-                    return;
-                    }
-                    let store = this.abrirStore("tblalumnos", 'readwrite');
-                    if( this.accion==='nuevo' ){
-                        this.alumno.idAlumno = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
-                    }
-                    let query = store.put( JSON.parse( JSON.stringify(this.alumno) ));
-                    query.onsuccess = resp=>{
-                        this.nuevoAlumno();
-                        this.listarAlumno();
-                    };
-                    query.onerror = err=>{
-                        console.error('ERROR al guardar alumno', err);
-                    };
-
-                },
-                
-                listarAlumno(){
-                    let store = this.abrirStore('tblalumnos', 'readonly'),
-                    data = store.getAll();
-                    data.onsuccess = resp=>{
-                    this.alumnos = data.result
-                    .filter(alumno=>alumno.nombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || 
-                        alumno.codigo.indexOf(this.buscar)>-1);
-                    };
-                },
-
-                eliminarAlumno(alumno){
-                    if( confirm(`Esta seguro de eliminar el autor ${alumno.nombre}?`)){
-                        let store = this.abrirStore('tblalumnos', 'readwrite'),
-                            req = store.delete(alumno.idAlumno);
-                        req.onsuccess = res => {
-                            this.listarAlumno();
-                        };
-                        req.onerror = err => {
-                            console.log("ERROR al eliminar alumno")
-                        }
-                    }
-
-                },
-
-                abrirBD() {
-                    let indexDB = indexedDB.open('db_sistema_academico', 1);
-                    indexDB.onupgradeneeded = e => {
-                        let req = e.target.result,
-                            tblalumnos = req.createObjectStore('tblalumnos', {
-                                keyPath: 'idAlumno'
-                            });
-
-                        tblalumnos.createIndex('idAlumno', 'idAlumno', {
-                            unique: true
-                        });
-                        tblalumnos.createIndex('codigo', 'codigo', {
-                            unique: true
-                        });
-                    };
-                    indexDB.onsuccess = e => {
-                        db = e.target.result;
-                        // this.listarDocentes();
-                    };
-                    indexDB.onerror = e => {
-                        console.error('ERROR al crear, abrir la BD', e);
-                    };
-                },
-                abrirStore(store, modo) {
-                    let ltx = db.transaction(store, modo);
-                    return ltx.objectStore(store);
-                }
-            },
-            created() {
-                this.abrirBD();
-            }
-        }).mount('#app')
-        
-    </script>
+    <script src="docentes.js"></script>
+    <script src="materias.js"></script>
+    <script src="alumnos.js"></script>
+    <script src="main.js"></script>
 </body>
+// const {
+    //     createApp
+    // } = Vue;
+
+    // var db;
+
+
+    // createApp({
+    //     data(){
+    //         return {
+    //             db  : '',
+    //             buscar : '',
+    //             alumnos : [],
+    //             accion : 'nuevo',
+    //             alumno : {
+    //                 idAlumno : '',
+    //                 codigo : '',
+    //                 nombre : '',
+    //                 direccion : '',
+    //                 municipio : '',
+    //                 departamento : '',                        
+    //                 telefono : '',
+    //                 fechaNacimiento : '',
+    //                 sexo : '',
+    //             }
+    //         }
+    //     },
+    //     methods: {
+
+    //         nuevoAlumno(){
+    //             this.accion = 'nuevo';
+    //             this.alumno.idAlumno = '';
+    //             this.alumno.codigo = '';
+    //             this.alumno.nombre = '';
+    //             this.alumno.direccion = '';
+    //             this.alumno.municipio = '';
+    //             this.alumno.departamento = '';
+    //             this.alumno.telefono = '';
+    //             this.alumno.fechaNacimiento = '';
+    //             this.alumno.sexo = '';
+    //         },
+
+    //         modificarAlumno(alumno){
+    //             this.accion = 'modificar';
+    //             this.alumno = alumno;
+    //         },
+
+    //         guardarAlumno(){
+    //             if( this.alumno.nombre=='' || 
+    //             this.alumno.codigo=='' ){
+    //             console.log( 'Por favor ingrese los datos correspondientes' );
+    //             return;
+    //             }
+    //             let store = this.abrirStore("tblalumnos", 'readwrite');
+    //             if( this.accion==='nuevo' ){
+    //                 this.alumno.idAlumno = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
+    //             }
+    //             let query = store.put( JSON.parse( JSON.stringify(this.alumno) ));
+    //             query.onsuccess = resp=>{
+    //                 this.nuevoAlumno();
+    //                 this.listarAlumno();
+    //             };
+    //             query.onerror = err=>{
+    //                 console.error('ERROR al guardar alumno', err);
+    //             };
+    //         },
+            
+    //         listarAlumno(){
+    //             let store = this.abrirStore('tblalumnos', 'readonly'),
+    //             data = store.getAll();
+    //             data.onsuccess = resp=>{
+    //             this.alumnos = data.result
+    //             .filter(alumno=>alumno.nombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || 
+    //                 alumno.codigo.indexOf(this.buscar)>-1);
+    //             };
+    //         },
+
+    //         eliminarAlumno(alumno){
+    //             if( confirm(`Esta seguro de eliminar el autor ${alumno.nombre}?`)){
+    //                 let store = this.abrirStore('tblalumnos', 'readwrite'),
+    //                     req = store.delete(alumno.idAlumno);
+    //                 req.onsuccess = res => {
+    //                     this.listarAlumno();
+    //                 };
+    //                 req.onerror = err => {
+    //                     console.log("ERROR al eliminar alumno")
+    //                 }
+    //             }
+    //         },
+
+            // abrirBD() {
+            //     let indexDB = indexedDB.open('db_sistema_academico', 1);
+            //     indexDB.onupgradeneeded = e => {
+            //         let req = e.target.result,
+            //             tblalumnos = req.createObjectStore('tblalumnos', {
+            //                 keyPath: 'idAlumno'
+            //             });
+            //         tblalumnos.createIndex('idAlumno', 'idAlumno', {
+            //             unique: true
+            //         });
+            //         tblalumnos.createIndex('codigo', 'codigo', {
+            //             unique: true
+            //         });
+            //     };
+            //     indexDB.onsuccess = e => {
+            //         db = e.target.result;
+            //         // this.listarDocentes();
+            //     };
+            //     indexDB.onerror = e => {
+            //         console.error('ERROR al crear, abrir la BD', e);
+            //     };
+            // // },
+            // abrirStore(store, modo) {
+            //     let ltx = db.transaction(store, modo);
+            //     return ltx.objectStore(store);
+            // }
+    //     },
+    //     created() {
+            // this.abrirBD();
+    //     }
+    // }).mount('#app')
 </html>
