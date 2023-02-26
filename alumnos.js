@@ -4,6 +4,7 @@ Vue.component('component-alumnos',{
             buscar : '',
             alumnos : '',
             accion : '',
+            alumnos : [],
             alumno : {
                 idAlumno : '',
                 codigo : '',
@@ -155,7 +156,7 @@ Vue.component('component-alumnos',{
                         <thead>
                             <tr>
                                 <th>BUSCAR:</th>
-                                <th colspan="2"><input type="text" @keyup="listarAlumno()" v-model="buscar" 
+                                <th colspan="2"><input type="text" @keyup="listar()" v-model="buscar" 
                                     class="form-control" placeholder="Busar por nombre" ></th>
                             </tr>
                             <tr>

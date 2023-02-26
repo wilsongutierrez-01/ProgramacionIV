@@ -12,28 +12,6 @@ Vue.component('component-materias',{
         }
     },
     methods:{
-        guardarMateria(){
-            this.listar();
-            if(this.accion==='nuevo'){
-                this.materia.idMateria = new Date().getTime().toString(16);
-                this.materias.push( JSON.parse( JSON.stringify(this.materia) ) );
-            }else if(this.accion==='modificar'){
-                let index = this.materias.findIndex(materia=>materia.idMateria==this.materia.idMateria);
-                this.materias[index] = JSON.parse( JSON.stringify(this.materia) );
-            }else if(this.accion==='eliminar'){
-                let index = this.materias.findIndex(materia=>materia.idMateria==this.materia.idMateria);
-                this.materias.splice(index,1);
-            }
-            localStorage.setItem("materias", JSON.stringify(this.materias) );
-            this.nuevoMateria();
-        },
-        eliminarMateria(materia){
-            if( confirm(`Esta seguro de eliminar a ${materia.nombre}?`) ){
-                this.accion='eliminar';
-                this.materia=materia;
-                this.guardarMateria();
-            }
-        },
         nuevoMateria(){
             this.accion = 'nuevo';
             this.materia.idMateria = '';
@@ -44,12 +22,53 @@ Vue.component('component-materias',{
             this.accion = 'modificar';
             this.materia = materia;
         },
+        guardarMateria(){
+            if( this.materia.nombre=='' || 
+            this.materia.codigo=='' ){
+            console.log( 'Por favor ingrese los datos correspondientes' );
+            return;
+            }
+            let store = this.abrirStore("tblmaterias", 'readwrite');
+            if( this.accion==='nuevo' ){
+                this.materia.idMateria = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
+            }
+            let query = store.put( JSON.parse( JSON.stringify(this.materia) ));
+            query.onsuccess = resp=>{
+                this.nuevoMateria();
+                this.listar();
+            };
+            query.onerror = err=>{
+                console.error('ERROR al guardar Materia', err);
+            };
+        },
+        eliminarMateria(materia){
+            if( confirm(`Esta seguro de eliminar el autor ${materia.nombre}?`)){
+                let store = this.abrirStore('tblmaterias', 'readwrite'),
+                    req = store.delete(materia.idMateria);
+                req.onsuccess = res => {
+                    this.listar();
+                };
+                req.onerror = err => {
+                    console.log("ERROR al eliminar materia")
+                }
+            }
+        },
+
         listar(){
-            this.materias = JSON.parse( localStorage.getItem('materias') || "[]" )
-                .filter(materia=>materia.nombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1);
-        }
+            let store = this.abrirStore('tblmaterias', 'readonly'),
+            data = store.getAll();
+            data.onsuccess = resp=>{
+            this.materias = data.result
+            .filter(materia=>materia.nombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || 
+                materia.codigo.indexOf(this.buscar)>-1);
+            }
+        },
+        abrirStore  (store, modo) {
+            let ltx = db.transaction(store, modo);
+            return ltx.objectStore(store);
+        },
     },
-    template: `
+        template: `
         <div class="row">
             <div class="col-12 col-md-6">
                 <div class="card">

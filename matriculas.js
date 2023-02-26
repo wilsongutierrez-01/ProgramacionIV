@@ -1,4 +1,4 @@
-Vue.component('component-docentes',{
+Vue.component('component-matriculas',{
     data() {
         return {
             accion:'nuevo',
@@ -71,7 +71,7 @@ Vue.component('component-docentes',{
         <div class="row">
             <div class="col-12 col-md-6">
                 <div class="card">
-                    <div class="card-header">REGISTRO DE DOCENTE</div>
+                    <div class="card-header">MATRICULAS</div>
                     <div class="card-body">
                         <form id="frmDocente" @reset.prevent="nuevoDocente" v-on:submit.prevent="guardarDocente">
                             <div class="row p-1">
@@ -108,7 +108,7 @@ Vue.component('component-docentes',{
             </div>
             <div class="col-12 col-md-6">
                 <div class="card">
-                    <div class="card-header">LISTADO DE DOCENTES</div>
+                    <div class="card-header">MATRICULAS VIGENTES</div>
                     <div class="card-body">
                         <table class="table table-bordered table-hover">
                             <thead>

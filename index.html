@@ -1,168 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratorio II</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Laboratorio II</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-</head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    </head>
 
-<body>
-    <div class="container-fluid" id="app">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">::.. SISTEMA ACADEMICO ..::</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a class="nav-link" @click="abrirFormulario('docente')">Docentes</a>
-                        <a class="nav-link" @click="abrirFormulario('alumno')">Alumnos</a>
-                        <a class="nav-link" @click="abrirFormulario('materia')">Materias</a>
-                        <a class="nav-link" @click="abrirFormulario('matricula')">Matricula</a>
-                        <a class="nav-link" @click="abrirFormulario('inscripcion')">Inscripcion</a>
+    <body>
+        <div class="container-fluid" id="app">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">::.. SISTEMA ACADEMICO ..::</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <a class="nav-link" @click="abrirFormulario('docente')">Docentes</a>
+                            <a class="nav-link" @click="abrirFormulario('alumno')">Alumnos</a>
+                            <a class="nav-link" @click="abrirFormulario('materia')">Materias</a>
+                            <a class="nav-link" @click="abrirFormulario('matricula')">Matricula</a>
+                            <a class="nav-link" @click="abrirFormulario('inscripcion')">Inscripcion</a>
+                        </div>
                     </div>
                 </div>
+            </nav>
+            <div id="appSistema">
+                <component-docentes ref="docente" v-show="forms['docente'].mostrar"></component-docentes>
+                <component-materias ref="materia" v-show="forms['materia'].mostrar"></component-materias>
+                <component-alumnos ref="alumno" v-show="forms['alumno'].mostrar"></component-alumnos>
+                <component-matriculas ref="matricula" v-show="forms['matricula'].mostrar"></component-matriculas>
+                <component-inscripciones ref="inscripcion" v-show="forms['inscripcion'].mostrar"></component-inscripciones>
             </div>
-        </nav>
-        <div id="appSistema">
-            <component-docentes ref="docente" v-show="forms['docente'].mostrar"></component-docentes>
-            <component-materias ref="materia" v-show="forms['materia'].mostrar"></component-materias>
-            <component-alumnos ref="alumno" v-show="forms['alumno'].mostrar"></component-alumnos>
         </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="docentes.js"></script>
-    <script src="materias.js"></script>
-    <script src="alumnos.js"></script>
-    <script src="main.js"></script>
-</body>
-// const {
-    //     createApp
-    // } = Vue;
-
-    // var db;
+  
+        
+        
+       
 
 
-    // createApp({
-    //     data(){
-    //         return {
-    //             db  : '',
-    //             buscar : '',
-    //             alumnos : [],
-    //             accion : 'nuevo',
-    //             alumno : {
-    //                 idAlumno : '',
-    //                 codigo : '',
-    //                 nombre : '',
-    //                 direccion : '',
-    //                 municipio : '',
-    //                 departamento : '',                        
-    //                 telefono : '',
-    //                 fechaNacimiento : '',
-    //                 sexo : '',
-    //             }
-    //         }
-    //     },
-    //     methods: {
-
-    //         nuevoAlumno(){
-    //             this.accion = 'nuevo';
-    //             this.alumno.idAlumno = '';
-    //             this.alumno.codigo = '';
-    //             this.alumno.nombre = '';
-    //             this.alumno.direccion = '';
-    //             this.alumno.municipio = '';
-    //             this.alumno.departamento = '';
-    //             this.alumno.telefono = '';
-    //             this.alumno.fechaNacimiento = '';
-    //             this.alumno.sexo = '';
-    //         },
-
-    //         modificarAlumno(alumno){
-    //             this.accion = 'modificar';
-    //             this.alumno = alumno;
-    //         },
-
-    //         guardarAlumno(){
-    //             if( this.alumno.nombre=='' || 
-    //             this.alumno.codigo=='' ){
-    //             console.log( 'Por favor ingrese los datos correspondientes' );
-    //             return;
-    //             }
-    //             let store = this.abrirStore("tblalumnos", 'readwrite');
-    //             if( this.accion==='nuevo' ){
-    //                 this.alumno.idAlumno = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
-    //             }
-    //             let query = store.put( JSON.parse( JSON.stringify(this.alumno) ));
-    //             query.onsuccess = resp=>{
-    //                 this.nuevoAlumno();
-    //                 this.listarAlumno();
-    //             };
-    //             query.onerror = err=>{
-    //                 console.error('ERROR al guardar alumno', err);
-    //             };
-    //         },
-            
-    //         listarAlumno(){
-    //             let store = this.abrirStore('tblalumnos', 'readonly'),
-    //             data = store.getAll();
-    //             data.onsuccess = resp=>{
-    //             this.alumnos = data.result
-    //             .filter(alumno=>alumno.nombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || 
-    //                 alumno.codigo.indexOf(this.buscar)>-1);
-    //             };
-    //         },
-
-    //         eliminarAlumno(alumno){
-    //             if( confirm(`Esta seguro de eliminar el autor ${alumno.nombre}?`)){
-    //                 let store = this.abrirStore('tblalumnos', 'readwrite'),
-    //                     req = store.delete(alumno.idAlumno);
-    //                 req.onsuccess = res => {
-    //                     this.listarAlumno();
-    //                 };
-    //                 req.onerror = err => {
-    //                     console.log("ERROR al eliminar alumno")
-    //                 }
-    //             }
-    //         },
-
-            // abrirBD() {
-            //     let indexDB = indexedDB.open('db_sistema_academico', 1);
-            //     indexDB.onupgradeneeded = e => {
-            //         let req = e.target.result,
-            //             tblalumnos = req.createObjectStore('tblalumnos', {
-            //                 keyPath: 'idAlumno'
-            //             });
-            //         tblalumnos.createIndex('idAlumno', 'idAlumno', {
-            //             unique: true
-            //         });
-            //         tblalumnos.createIndex('codigo', 'codigo', {
-            //             unique: true
-            //         });
-            //     };
-            //     indexDB.onsuccess = e => {
-            //         db = e.target.result;
-            //         // this.listarDocentes();
-            //     };
-            //     indexDB.onerror = e => {
-            //         console.error('ERROR al crear, abrir la BD', e);
-            //     };
-            // // },
-            // abrirStore(store, modo) {
-            //     let ltx = db.transaction(store, modo);
-            //     return ltx.objectStore(store);
-            // }
-    //     },
-    //     created() {
-            // this.abrirBD();
-    //     }
-    // }).mount('#app')
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="docentes.js"></script>
+        <script src="materias.js"></script>
+        <script src="alumnos.js"></script>
+        <script src="matriculas.js"></script>
+        <script src="inscripciones.js"></script>
+        <script src="main.js"></script>
+    </body>
 </html>
