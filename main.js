@@ -21,15 +21,15 @@ var app = new Vue({
             let indexDB = indexedDB.open('db_sistema_academico',1);
             indexDB.onupgradeneeded=e=>{
                 let req = e.target.result,
-                    tbldocente = req.createObjectStore('tbldocentes', {keyPath:'idDocente'}),
-                    tblalumno = req.createObjectStore('tblalumnos',{keyPath:'idAlumno'}),
-                    tblinscripcion = req.createObjectStore('tblinscripciones', {keyPath:'idInscripcion'}),
-                    tblmateria = req.createObjectStore('tblmaterias',{keyPath:'idMateria'});
+                    tbldocentes = req.createObjectStore('tbldocentes', {keyPath:'idDocente'}),
+                    tblalumnos = req.createObjectStore('tblalumnos',{keyPath:'codigo'}),
+                    tblinscripciones = req.createObjectStore('tblinscripciones', {keyPath:'idInscripcion'}),
+                    tblmaterias = req.createObjectStore('tblmaterias',{keyPath:'idMateria'});
 
-                tbldocente.createIndex('idDocente', 'idDocente', {unique:true});
-                tblalumno.createIndex('idAlumno', 'idAlumno', {unique:true});
-                tblmateria.createIndex('idMateria', 'idMateria', {unique:true});
-                tblinscripcion.createIndex('idInscripcion', 'idInscripcion', {unique:true});
+                tbldocentes.createIndex('idDocente', 'idDocente', {unique:true});
+                tblalumnos.createIndex('codigo', 'codigo', {unique:true});
+                tblmaterias.createIndex('idMateria', 'idMateria', {unique:true});
+                tblinscripciones.createIndex('idInscripcion', 'idInscripcion', {unique:true});
             };
             indexDB.onsuccess= e=>{
                 db = e.target.result;

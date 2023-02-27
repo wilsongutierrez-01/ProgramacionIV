@@ -21,7 +21,6 @@ Vue.component('component-alumnos',{
     methods:{
         nuevoAlumno(){
             this.accion = 'nuevo';
-            this.alumno.idAlumno = '';
             this.alumno.codigo = '';
             this.alumno.nombre = '';
             this.alumno.direccion = '';
