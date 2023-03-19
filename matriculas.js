@@ -1,5 +1,5 @@
 Vue.component('v-select-alumno', VueSelect.VueSelect);
-Vue.component('component-matriculas', {
+Vue.component('matriculas', {
     data() {
         return {
             db         : '',

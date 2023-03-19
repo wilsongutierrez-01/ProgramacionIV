@@ -1,4 +1,4 @@
-Vue.component('component-docentes',{
+Vue.component('docentes',{
     data() {
         return {
             accion:'nuevo',

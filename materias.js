@@ -1,4 +1,4 @@
-Vue.component('component-materias',{
+Vue.component('materias',{
     data() {
         return {
             accion:'nuevo',
@@ -34,6 +34,11 @@ Vue.component('component-materias',{
             }
             let query = store.put( JSON.parse( JSON.stringify(this.materia) ));
             query.onsuccess = resp=>{
+                fetch(`private/modulos/materias/materias.php?accion=${this.accion}&materia=${JSON.stringify(this.materia)}`)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    console.log(resp);
+                });
                 this.nuevoMateria();
                 this.listar();
             };
@@ -46,6 +51,11 @@ Vue.component('component-materias',{
                 let store = this.abrirStore('tblmaterias', 'readwrite'),
                     req = store.delete(materia.idMateria);
                 req.onsuccess = res => {
+                    fetch(`private/modulos/materias/materias.php?accion=eliminar&materia=${JSON.stringify(this.materia)}`)
+                    .then(resp=>resp.json())
+                    .then(resp=>{
+                        console.log(resp);
+                    });
                     this.listar();
                 };
                 req.onerror = err => {

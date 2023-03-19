@@ -1,154 +1,168 @@
-Vue.component('component-inscripciones',{
+Vue.component('v-select-alumno', VueSelect.VueSelect);
+Vue.component('inscripciones', {
     data() {
         return {
-            buscar : '',
-            accion : '',
-            inscripciones : [],
-            inscripcion : {
-                idInscripcion: '',
-                icodigo : '',
-                inombre : '',
-                itelefono : '',
-            } 
+            db         : '',
+            buscar     : '',
+            matriculas : [],
+            alumnos    : [],
+            accion     : 'nuevo',
+            matricula  : {
+                idMatricula : '',
+                fecha       : '',
+                pago        : false,
+                comprobante : '',
+                alumno      : {
+                    id      : '',
+                    label   : ''
+                }
+            }
         }
     },
     methods:{
-        nuevoAlumno(){
+        nuevoMatricula(){
             this.accion = 'nuevo';
-            this.inscripcion.idInscripcion = '';
-            this.inscripcion.icodigo = '';
-            this.inscripcion.inombre = '';
-            this.inscripcion.itelefono = '';
+            this.matricula.idMatricula = '';
+            this.matricula.pago = false;
+            this.matricula.fecha = '';
+            this.matricula.alumno.id = '';
+            this.matricula.alumno.label = '';
         },
-        modificarAlumno(inscripcion){
+        modificarMatricula(matricula){
             this.accion = 'modificar';
-            this.inscripcion = inscripcion;
+            this.matricula = matricula;
         },
-        guardarAlumno(){
-            if( this.codigo == '' ){
-            console.log( 'Por favor primero agregue al estudiante' );
-            return;
+        guardarMatricula(){
+            if( this.matricula.alumno.id=='' || 
+                this.matricula.alumno.label=='' ||
+                this.matricula.fecha=='' ){
+                console.log( 'Por favor ingrese los datos correspondientes' );
+                return;
             }
-            let store = this.abrirStore("tblinscripciones", 'readwrite');
+            let store = abrirStore("tblmatriculas", 'readwrite');
             if( this.accion==='nuevo' ){
-                this.inscripcion.idInscripcion = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
+                this.matricula.idMatricula = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
             }
-            let query = store.put( JSON.parse( JSON.stringify(this.inscripcion) ));
+            let query = store.put( JSON.parse( JSON.stringify(this.matricula) ));
             query.onsuccess = resp=>{
-                this.comparar(this.inscripcion.icodigo);
-                this.nuevoAlumno();
+                this.nuevoMatricula();
                 this.listar();
             };
             query.onerror = err=>{
-                console.error('ERROR al inscribir alumno', err);
+                console.error('ERROR al guardar matricula', err);
             };
         },
-        listar(){
-            let store = this.abrirStore('tblinscripciones', 'readonly'),
-            data = store.getAll();
-            data.onsuccess = resp=>{
-            this.inscripciones = data.result
-            .filter(inscripcion=>inscripcion.inombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || 
-                inscripcion.icodigo.indexOf(this.buscar)>-1);
-            };
-        },
-        comparar(code){
-            var objectStore = this.abrirStore('tblalumnos', 'readonly');
-            var request = objectStore.get(code);
-            request.onerror = function(event){
-                console.log('errores')
-            };
-            request.onsuccess = function(event){
-                    console.log(request.result.codigo);
-
-                return request.result.codigo;
-            
-            };
-        },
-        eliminarAlumno(inscripcion){
-            if( confirm(`Esta seguro de eliminar el autor ${inscripcion.nombre}?`)){
-                let store = this.abrirStore('tblinscripciones', 'readwrite'),
-                    req = store.delete(inscripcion.idInscripcion);
-                req.onsuccess = res => {
+        eliminarMatricula(matricula){
+            if( confirm(`Esta seguro de eliminar el matricula ${matricula.nombre}?`) ){
+                let store = abrirStore('tblmatriculas', 'readwrite'),
+                    req = store.delete(matricula.idMatricula);
+                req.onsuccess = res=>{
                     this.listar();
                 };
-                req.onerror = err => {
-                    console.log("ERROR al eliminar alumno")
-                }
+                req.onerror = err=>{
+                    console.error('ERROR al guardar matricula');
+                };
             }
         },
-        abrirStore(store, modo) {
-            let ltx = db.transaction(store, modo);
-            return ltx.objectStore(store);
+        listar(){
+            let store = abrirStore('tblmatriculas', 'readonly'),
+                data = store.getAll();
+            data.onsuccess = resp=>{
+                this.matriculas = data.result
+                    .filter(matricula=>matricula.alumno.label.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || 
+                        matricula.fecha.indexOf(this.buscar)>-1);
+            };
+            let storeAlumno = abrirStore('tblmatriculas', 'readonly'),
+                datAlumno = storeAlumno.getAll();
+            datAlumno.onsuccess = resp=>{
+                this.alumnos = datAlumno.result.map(alumno=>{
+                    return {id: alumno.idAlumno, label: alumno.nombre}
+                });
+            };
         },
     },
-    template: `
-    <div class="row">
-    <div class="col-12 col-md-6">
-        <div class="card border-primary">
-            <div class="card-header bg-primary text-white">REGISTRAR ALUMNOS</div>
-            <div class="card-body">
-                <form id="frmInscripcion" @submit.prevent="guardarAlumno" @reset.prevent="nuevoAlumno()" >
-                    <div class="row p-1">
-                    <div class="col-3 col-md-3">CODIGO:</div>
-                    <div class="col-9 col-md-3">
-                        <input required pattern="[A-Z]{4}[0-9]{6}" class="form-control" type="text" v-model="inscripcion.icodigo"  placeholder="Codigo" >
+    template : `
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">REGISTRO DE MATRICULAS</div>
+                        <div class="card-body">
+                            <form id="frmMatricula" @submit.prevent="guardarMatricula" @reset.prevent="nuevoMatricula()">
+                                <div class="row p-1">
+                                    <div class="col-3 col-md-2">ALUMNO:</div>
+                                    <div class="col-9 col-md-3">
+                                        <v-select-alumno required v-model="matricula.alumno" 
+                                            :options="alumnos">Por favor seleccione un alumno</v-select-alumno>
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col-3 col-md-2">FECHA:</div>
+                                    <div class="col-9 col-md-6">
+                                        <input required class="form-control" type="date" v-model="matricula.fecha">
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col-3 col-md-2"><label for="chkPagoMatricula">ACTUAZACION PAGO:</label></div>
+                                    <div class="col-9 col-md-6">
+                                        <input class="form-check-input" type="checkbox" v-model="matricula.pago" id="chkPagoMatricula">
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col-3 col-md-2">
+                                        <img :src='matricula.comprobante' width="50" height="50"/>
+                                    </div>
+                                    <div class="col-9 col-md-10">
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text" for="inputGroupFile01">Subir comprobante</label>
+                                            <input type="file" accept="image/*" onChange="seleccionarImagen(this)" class="form-control" id="inputGroupFile01">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col col-md-6">
+                                        <input class="btn btn-success" type="submit" value="Guardar Datos">
+                                    </div>
+                                    <div class="col col-md-6">
+                                        <input class="btn btn-warning" type="reset" value="Nuevo Registro">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">NOMBRE:</div>
-                        <div class="col-9 col-md-6">
-                            <input required pattern="[a-zA-Z ]{3,65}" class="form-control" type="text" v-model="inscripcion.inombre" >
+                <div class="col-12 col-md-6">
+                    <div class="card text-bg-light">
+                        <div class="card-header">CONSULTA DE MATRICULAS</div>
+                        <div class="card-body">
+                            <form>
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>BUSCAR:</th>
+                                            <th colspan="4"><input type="text" @keyup="listar()" v-model="buscar" 
+                                                class="form-control" placeholder="Busar por nombre" ></th>
+                                        </tr>
+                                        <tr>
+                                            <th>NOMBRE</th>
+                                            <th>FECHA</th>
+                                            <th>COMPROBANTE</th>
+                                            <th colspan="2">PAGO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="matricula in matriculas" @click='modificarMatricula(matricula)' :key="matricula.idMatricula">
+                                            <td>{{matricula.alumno.label}}</td>
+                                            <td>{{ (new Date(matricula.fecha +' 01:00:00')).toLocaleDateString() }}</td>
+                                            <td><img :src='matricula.comprobante' width="50" height="50" /></td>
+                                            <td>{{matricula.pago ? 'ACTUALIZO PAGO' : 'PENDIENTE ACTUALIZAR' }}</td>
+                                            <td><button @click.prevent="eliminarMatricula(matricula)" class="btn btn-danger">Eliminar</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
                         </div>
                     </div>
-                    <div class="row p-1">
-                        <div class="col-3 col-md-3">Telefono:</div>
-                        <div class="col-9 col-md-3">
-                            <input  class="form-control" type="text" v-model="inscripcion.itelefono">
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col col-md-6">
-                            <input class="btn btn-success" type="submit" value="Guardar Datos">
-                        </div>
-                        <div class="col col-md-6">
-                            <input class="btn btn-warning" type="reset" value="Nuevo Registro">
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-12 col-md-6">
-        <div class="card text-bg-light">
-            <div class="card-header">ALUMNOS INSCRITOS</div>
-            <div class="card-body">
-                <form>
-                    <table class="table table-dark table-hover">
-                        <thead>
-                            <tr>
-                                <th>BUSCAR:</th>
-                                <th colspan="2"><input type="text" @keyup="listar()" v-model="buscar" 
-                                    class="form-control" placeholder="Busar por nombre" ></th>
-                            </tr>
-                            <tr>
-                                <th>CODIGO</th>
-                                <th colspan="2">NOMBRE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="inscripcion in inscripciones" @click='modificarAlumno(inscripcion)' :key="inscripcion.idInscripcion">
-                                <td>{{inscripcion.icodigo}}</td>
-                                <td>{{inscripcion.inombre}}</td>
-                                <td><button @click.prevent="eliminarAlumno(inscripcion)" class="btn btn-danger">Eliminar</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-    `
+        `
 });

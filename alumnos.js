@@ -1,4 +1,4 @@
-Vue.component('component-alumnos',{
+Vue.component('alumnos',{
     data() {
         return {
             buscar : '',

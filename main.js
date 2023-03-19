@@ -49,3 +49,18 @@ function abrirStore(store, modo) {
     let ltx = db.transaction(store, modo);
     return ltx.objectStore(store);
 }
+
+async function seleccionarImagen(image){
+    let archivo = image.files[0];
+    if(archivo){
+        let blob = await img(archivo, 1),
+            reader = new FileReader();
+        reader.onload = e=>{
+            app.$refs.matricula.matricula.comprobante = e.target.result;
+            console.log(e.target.result);
+        };
+        reader.readAsDataURL(blob);
+    }else {
+        console.log("Poir favor seleccione una imagen validad...")
+    }
+}
