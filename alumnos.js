@@ -21,6 +21,7 @@ Vue.component('component-alumnos',{
     methods:{
         nuevoAlumno(){
             this.accion = 'nuevo';
+            this.alumno.idAlumno = '';
             this.alumno.codigo = '';
             this.alumno.nombre = '';
             this.alumno.direccion = '';
@@ -40,12 +41,17 @@ Vue.component('component-alumnos',{
             console.log( 'Por favor ingrese los datos correspondientes' );
             return;
             }
-            let store = this.abrirStore("tblalumnos", 'readwrite');
+            let store = abrirStore("tblalumnos", 'readwrite');
             if( this.accion==='nuevo' ){
                 this.alumno.idAlumno = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
             }
             let query = store.put( JSON.parse( JSON.stringify(this.alumno) ));
             query.onsuccess = resp=>{
+                fetch(`private/modulos/alumnos/alumnos.php?accion=${this.accion}&alumno=${JSON.stringify(this.alumno)}`)
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    console.log(resp);
+                });
                 this.nuevoAlumno();
                 this.listar();
             };
@@ -67,6 +73,11 @@ Vue.component('component-alumnos',{
                 let store = this.abrirStore('tblalumnos', 'readwrite'),
                     req = store.delete(alumno.idAlumno);
                 req.onsuccess = res => {
+                    fetch(`private/modulos/alumnos/alumnos.php?accion=eliminar&alumno=${JSON.stringify(this.alumno)}`)
+                    .then(resp=>resp.json())
+                    .then(resp=>{
+                        console.log(resp);
+                    });
                     this.listar();
                 };
                 req.onerror = err => {
@@ -119,7 +130,7 @@ Vue.component('component-alumnos',{
                     <div class="row p-1">
                         <div class="col-3 col-md-2">Telefono:</div>
                         <div class="col-9 col-md-6">
-                            <input  class="form-control" type="text" v-model="alumno.telefono">
+                            <input required pattern="[0-9]{8}" class="form-control" type="text" v-model="alumno.telefono" placeholder="78786767">
                         </div>
                     </div>
                     <div class="row p-1">
@@ -130,7 +141,7 @@ Vue.component('component-alumnos',{
                         <div class="row p-1">
                             <div class="col-3 col-md-2">SEXO:</div>
                             <div class="col-9 col-md-6">
-                                <input  class="form-control" type="text" v-model="alumno.sexo">
+                                <input  class="form-control" type="text" v-model="alumno.sexo" placeholder="M o F" required pattern="[M,F]{1}">
                             </div>
                         </div>
                     </div>

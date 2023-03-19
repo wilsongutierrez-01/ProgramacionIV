@@ -22,12 +22,13 @@ var app = new Vue({
             indexDB.onupgradeneeded=e=>{
                 let req = e.target.result,
                     tbldocentes = req.createObjectStore('tbldocentes', {keyPath:'idDocente'}),
-                    tblalumnos = req.createObjectStore('tblalumnos',{keyPath:'codigo'}),
+                    tblalumnos = req.createObjectStore('tblalumnos',{keyPath:'idAlumno'}),
                     tblinscripciones = req.createObjectStore('tblinscripciones', {keyPath:'idInscripcion'}),
                     tblmaterias = req.createObjectStore('tblmaterias',{keyPath:'idMateria'});
+                    tblmatriculas = req.createObjectStore('tblmatriculas',{keyPath:'idMatricula'})
 
                 tbldocentes.createIndex('idDocente', 'idDocente', {unique:true});
-                tblalumnos.createIndex('codigo', 'codigo', {unique:true});
+                tblalumnos.createIndex('idAlumno', 'idAlumno', {unique:true});
                 tblmaterias.createIndex('idMateria', 'idMateria', {unique:true});
                 tblinscripciones.createIndex('idInscripcion', 'idInscripcion', {unique:true});
             };
@@ -43,3 +44,8 @@ var app = new Vue({
         this.abrirBD();
     }
 });
+
+function abrirStore(store, modo) {
+    let ltx = db.transaction(store, modo);
+    return ltx.objectStore(store);
+}

@@ -60,16 +60,34 @@ Vue.component('component-docentes',{
         //         console.error('ERROR al guardar docente', err);
         //     };
         // },
+        // eliminarDocente(docente){
+        //     if( confirm(`Esta seguro de eliminar el autor ${docente.nombre}?`)){
+        //         let store = this.abrirStore('tbldocentes', 'readwrite'),
+        //             req = store.delete(docente.idDocente);
+        //         req.onsuccess = res => {
+        //             this.listar();
+        //         };
+        //         req.onerror = err => {
+        //             console.log("ERROR al eliminar docente")
+        //         }
+        //     }
+        // },
+
         eliminarDocente(docente){
-            if( confirm(`Esta seguro de eliminar el autor ${docente.nombre}?`)){
-                let store = this.abrirStore('tbldocentes', 'readwrite'),
+            if( confirm(`Esta seguro de eliminar el docente ${docente.nombre}?`) ){
+                let store = abrirStore('tbldocentes', 'readwrite'),
                     req = store.delete(docente.idDocente);
-                req.onsuccess = res => {
+                req.onsuccess = res=>{
+                    fetch(`private/modulos/docentes/docentes.php?accion=eliminar&docente=${JSON.stringify(this.docente)}`)
+                    .then(resp=>resp.json())
+                    .then(resp=>{
+                        console.log(resp);
+                    });
                     this.listar();
                 };
-                req.onerror = err => {
-                    console.log("ERROR al eliminar docente")
-                }
+                req.onerror = err=>{
+                    console.error('ERROR al guardar docente');
+                };
             }
         },
         nuevoDocente(){

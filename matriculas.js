@@ -1,139 +1,168 @@
-Vue.component('component-matriculas',{
+Vue.component('v-select-alumno', VueSelect.VueSelect);
+Vue.component('component-matriculas', {
     data() {
         return {
-            accion:'nuevo',
-            buscar: '',
-            docentes: [],
-            docente:{
-                idDocente : '',
-                codigo : '',
-                nombre : '',
+            db         : '',
+            buscar     : '',
+            matriculas : [],
+            alumnos    : [],
+            accion     : 'nuevo',
+            matricula  : {
+                idMatricula : '',
+                fecha       : '',
+                pago        : false,
+                comprobante : '',
+                alumno      : {
+                    id      : '',
+                    label   : ''
+                }
             }
         }
     },
     methods:{
-        guardarDocente(){
-            if( this.docente.nombre=='' || 
-            this.docente.codigo=='' ){
-            console.log( 'Por favor ingrese los datos correspondientes' );
-            return;
+        nuevoMatricula(){
+            this.accion = 'nuevo';
+            this.matricula.idMatricula = '';
+            this.matricula.pago = false;
+            this.matricula.fecha = '';
+            this.matricula.alumno.id = '';
+            this.matricula.alumno.label = '';
+        },
+        modificarMatricula(matricula){
+            this.accion = 'modificar';
+            this.matricula = matricula;
+        },
+        guardarMatricula(){
+            if( this.matricula.alumno.id=='' || 
+                this.matricula.alumno.label=='' ||
+                this.matricula.fecha=='' ){
+                console.log( 'Por favor ingrese los datos correspondientes' );
+                return;
             }
-            let store = this.abrirStore("tbldocentes", 'readwrite');
+            let store = abrirStore("tblmatriculas", 'readwrite');
             if( this.accion==='nuevo' ){
-                this.docente.idDocente = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
+                this.matricula.idMatricula = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
             }
-            let query = store.put( JSON.parse( JSON.stringify(this.docente) ));
+            let query = store.put( JSON.parse( JSON.stringify(this.matricula) ));
             query.onsuccess = resp=>{
-                this.nuevoDocente();
+                this.nuevoMatricula();
                 this.listar();
             };
             query.onerror = err=>{
-                console.error('ERROR al guardar docente', err);
+                console.error('ERROR al guardar matricula', err);
             };
         },
-        eliminarDocente(docente){
-            if( confirm(`Esta seguro de eliminar el autor ${docente.nombre}?`)){
-                let store = this.abrirStore('tbldocentes', 'readwrite'),
-                    req = store.delete(docente.idDocente);
-                req.onsuccess = res => {
+        eliminarMatricula(matricula){
+            if( confirm(`Esta seguro de eliminar el matricula ${matricula.nombre}?`) ){
+                let store = abrirStore('tblmatriculas', 'readwrite'),
+                    req = store.delete(matricula.idMatricula);
+                req.onsuccess = res=>{
                     this.listar();
                 };
-                req.onerror = err => {
-                    console.log("ERROR al eliminar docente")
-                }
+                req.onerror = err=>{
+                    console.error('ERROR al guardar matricula');
+                };
             }
         },
-        nuevoDocente(){
-            this.accion = 'nuevo';
-            this.docente.idDocente = '';
-            this.docente.codigo = '';
-            this.docente.nombre = '';
-        },
-        modificarDocente(docente){
-            this.accion = 'modificar';
-            this.docente = docente;
-        },
         listar(){
-            let store = this.abrirStore('tbldocentes', 'readonly'),
-            data = store.getAll();
+            let store = abrirStore('tblmatriculas', 'readonly'),
+                data = store.getAll();
             data.onsuccess = resp=>{
-            this.docentes = data.result
-            .filter(docente=>docente.nombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || 
-                docente.codigo.indexOf(this.buscar)>-1);
+                this.matriculas = data.result
+                    .filter(matricula=>matricula.alumno.label.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 || 
+                        matricula.fecha.indexOf(this.buscar)>-1);
+            };
+            let storeAlumno = abrirStore('tblalumnos', 'readonly'),
+                datAlumno = storeAlumno.getAll();
+            datAlumno.onsuccess = resp=>{
+                this.alumnos = datAlumno.result.map(alumno=>{
+                    return {id: alumno.idAlumno, label: alumno.nombre}
+                });
             };
         },
-        abrirStore(store, modo) {
-            let ltx = db.transaction(store, modo);
-            return ltx.objectStore(store);
-        },
     },
-    template: `
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="card">
-                    <div class="card-header">MATRICULAS</div>
-                    <div class="card-body">
-                        <form id="frmDocente" @reset.prevent="nuevoDocente" v-on:submit.prevent="guardarDocente">
-                            <div class="row p-1">
-                                <div class="col-3 col-md-2">
-                                    <label for="txtCodigoDocente">CODIGO:</label>
+    template : `
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">REGISTRO DE MATRICULAS</div>
+                        <div class="card-body">
+                            <form id="frmMatricula" @submit.prevent="guardarMatricula" @reset.prevent="nuevoMatricula()">
+                                <div class="row p-1">
+                                    <div class="col-3 col-md-2">ALUMNO:</div>
+                                    <div class="col-9 col-md-3">
+                                        <v-select-alumno required v-model="matricula.alumno" 
+                                            :options="alumnos">Por favor seleccione un alumno</v-select-alumno>
+                                    </div>
                                 </div>
-                                <div class="col-3 col-md-3">
-                                    <input required pattern="[0-9]{3}" 
-                                        title="Ingrese un codigo de docente de 3 digitos"
-                                            v-model="docente.codigo" type="text" class="form-control" name="txtCodigoDocente" id="txtCodigoDocente">
+                                <div class="row p-1">
+                                    <div class="col-3 col-md-2">FECHA:</div>
+                                    <div class="col-9 col-md-6">
+                                        <input required class="form-control" type="date" v-model="matricula.fecha">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row p-1">
-                                <div class="col-3 col-md-2">
-                                    <label for="txtNombreDocente">NOMBRE:</label>
+                                <div class="row p-1">
+                                    <div class="col-3 col-md-2"><label for="chkPagoMatricula">ACTUAZACION PAGO:</label></div>
+                                    <div class="col-9 col-md-6">
+                                        <input class="form-check-input" type="checkbox" v-model="matricula.pago" id="chkPagoMatricula">
+                                    </div>
                                 </div>
-                                <div class="col-9 col-md-6">
-                                    <input required pattern="[A-Za-zÑñáéíóú ]{3,75}"
-                                        v-model="docente.nombre" type="text" class="form-control" name="txtNombreDocente" id="txtNombreDocente">
+                                <div class="row p-1">
+                                    <div class="col-3 col-md-2">
+                                        <img :src='matricula.comprobante' width="50" height="50"/>
+                                    </div>
+                                    <div class="col-9 col-md-10">
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text" for="inputGroupFile01">Subir comprobante</label>
+                                            <input type="file" accept="image/*" onChange="seleccionarImagen(this)" class="form-control" id="inputGroupFile01">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row p-1">
-                                <div class="col-3 col-md-3">
-                                    <input class="btn btn-primary" type="submit" 
-                                        value="Guardar">
+                                <div class="row p-1">
+                                    <div class="col col-md-6">
+                                        <input class="btn btn-success" type="submit" value="Guardar Datos">
+                                    </div>
+                                    <div class="col col-md-6">
+                                        <input class="btn btn-warning" type="reset" value="Nuevo Registro">
+                                    </div>
                                 </div>
-                                <div class="col-3 col-md-3">
-                                    <input class="btn btn-warning" type="reset" value="Nuevo">
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="card text-bg-light">
+                        <div class="card-header">CONSULTA DE MATRICULAS</div>
+                        <div class="card-body">
+                            <form>
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>BUSCAR:</th>
+                                            <th colspan="4"><input type="text" @keyup="listar()" v-model="buscar" 
+                                                class="form-control" placeholder="Busar por nombre" ></th>
+                                        </tr>
+                                        <tr>
+                                            <th>NOMBRE</th>
+                                            <th>FECHA</th>
+                                            <th>COMPROBANTE</th>
+                                            <th colspan="2">PAGO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="matricula in matriculas" @click='modificarMatricula(matricula)' :key="matricula.idMatricula">
+                                            <td>{{matricula.alumno.label}}</td>
+                                            <td>{{ (new Date(matricula.fecha +' 01:00:00')).toLocaleDateString() }}</td>
+                                            <td><img :src='matricula.comprobante' width="50" height="50" /></td>
+                                            <td>{{matricula.pago ? 'ACTUALIZO PAGO' : 'PENDIENTE ACTUALIZAR' }}</td>
+                                            <td><button @click.prevent="eliminarMatricula(matricula)" class="btn btn-danger">Eliminar</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6">
-                <div class="card">
-                    <div class="card-header">MATRICULAS VIGENTES</div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>BUSCAR:</th>
-                                    <th colspan="2"><input type="text" class="form-control" v-model="buscar"
-                                        @keyup="listar()"
-                                        placeholder="Buscar por codigo o nombre"></th>
-                                </tr>
-                                <tr>
-                                    <th>CODIGO</th>
-                                    <th colspan="2">NOMBRE</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="docente in docentes" :key="docente.idDocente" @click="modificarDocente(docente)" >
-                                    <td>{{ docente.codigo }}</td>
-                                    <td>{{ docente.nombre }}</td>
-                                    <td><button class="btn btn-danger" @click="eliminarDocente(docente)">ELIMINAR</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `
+        `
 });
