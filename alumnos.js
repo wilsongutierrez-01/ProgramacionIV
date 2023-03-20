@@ -44,7 +44,12 @@ Vue.component('alumnos',{
             let store = abrirStore("tblalumnos", 'readwrite');
             if( this.accion==='nuevo' ){
                 this.alumno.idAlumno = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal   
+                if (this.alumno.idAlumno === ''){
+                    console.log('No se ha creado id para el alumno')
+                    return;
+                }
             }
+            
             let query = store.put( JSON.parse( JSON.stringify(this.alumno) ));
             query.onsuccess = resp=>{
                 fetch(`private/modulos/alumnos/alumnos.php?accion=${this.accion}&alumno=${JSON.stringify(this.alumno)}`)
