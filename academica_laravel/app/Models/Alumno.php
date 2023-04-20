@@ -18,5 +18,6 @@ class Alumno extends Model
         'idAlumno',
         'codigo',
         'nombre',
+        'apellido',
     ];
 }
