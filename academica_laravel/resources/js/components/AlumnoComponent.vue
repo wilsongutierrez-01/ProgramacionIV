@@ -83,7 +83,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="alumno in alumnoo" @click='modificarAlumno(alumno)' :key="alumno.idAlumno">
+                                <tr v-for="alumno in alumnos" @click='modificarAlumno(alumno)' :key="alumno.idAlumno">
                                     <td>{{alumno.codigo}}</td>
                                     <td>{{alumno.nombre}}</td>
                                     <td><button @click.prevent="eliminarAlumno(alumno)" class="btn btn-danger">Eliminar</button></td>
@@ -98,14 +98,17 @@
 </template>
 
 <script>
+import axios from 'axios';
+
     export default{
         data() {
             return {
-                buscar : '',
-                alumnoo : '',
-                accion : '',
-                alumnooo : [],
-                alumno : {
+                db      : '',
+                buscar  : '',
+                alumnos : '',
+                accion  : 'nuevo',
+                alumnos : [],
+                alumno  : {
                     idAlumno : '',
                     codigo : '',
                     nombre : '',
@@ -141,8 +144,10 @@
                 console.log( 'Por favor ingrese los datos correspondientes' );
                 return;
                 }
-                let store = abrirStore("tblalumnos", 'readwrite');
+                let store = this.abrirStore("tblalumnos", 'readwrite'),
+                    method = 'PUT';//actualizar
                 if( this.accion==='nuevo' ){
+                    method = 'POST';
                     this.alumno.idAlumno = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal
                     if (this.alumno.idAlumno === ''){
                         console.log('No se ha creado id para el alumno')
@@ -150,13 +155,18 @@
                     }
                 }
 
+                axios({
+                    url : 'alumnos',
+                    method,
+                    data : this.alumno
+                }).then(resp => {
+                    console.log(resp);
+                }).catch(error => {
+                    console.error(error);
+                });
+
                 let query = store.put( JSON.parse( JSON.stringify(this.alumno) ));
                 query.onsuccess = resp=>{
-                    fetch(`private/modulos/alumnos/alumnos.php?accion=${this.accion}&alumno=${JSON.stringify(this.alumno)}`)
-                    .then(resp=>resp.json())
-                    .then(resp=>{
-                        console.log(resp);
-                    });
                     this.nuevoAlumno();
                     this.listar();
                 };
@@ -168,21 +178,26 @@
                 let store = this.abrirStore('tblalumnos', 'readonly'),
                 data = store.getAll();
                 data.onsuccess = resp=>{
-                this.alumnooo = data.result
+                this.alumnos = data.result
                 .filter(alumno=>alumno.nombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 ||
                     alumno.codigo.indexOf(this.buscar)>-1);
                 };
             },
             eliminarAlumno(alumno){
                 if( confirm(`Esta seguro de eliminar el autor ${alumno.nombre}?`)){
+                    axios({
+                        url     : 'alumnos',
+                        method  : 'DELETE',
+                        data    : {idAlumno : alumno.idAlumno}
+
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(err => {
+                        console.log(err);
+                    })
                     let store = this.abrirStore('tblalumnos', 'readwrite'),
                         req = store.delete(alumno.idAlumno);
                     req.onsuccess = res => {
-                        fetch(`private/modulos/alumnos/alumnos.php?accion=eliminar&alumno=${JSON.stringify(this.alumno)}`)
-                        .then(resp=>resp.json())
-                        .then(resp=>{
-                            console.log(resp);
-                        });
                         this.listar();
                     };
                     req.onerror = err => {

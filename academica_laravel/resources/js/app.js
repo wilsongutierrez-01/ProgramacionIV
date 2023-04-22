@@ -6,13 +6,15 @@
 
 import './bootstrap';
 import { createApp } from 'vue';
-import alumnoo from './components/AlumnoComponent.vue';
+import alumno from './components/AlumnoComponent.vue';
+import docente from './components/DocenteComponent.vue';
 window.db = '';
 
 
 const app = createApp({
     components:{
-        alumnoo,
+        alumno,
+        docente,
     },
     data(){
         return{
@@ -26,10 +28,6 @@ const app = createApp({
         }
     },
     methods: {
-        // abrirFormulario(form){
-        //     this.forms[form].mostrar = !this.forms[form].mostrar;
-        //     this.$refs[form].listar();
-        // },
         abrirFormulario(form){
             this.forms[form].mostrar = !this.forms[form].mostrar;
             this.$refs[form].listar();
@@ -63,10 +61,6 @@ const app = createApp({
 });
 app.mount('#app');
 
-function abrirStore(store, modo) {
-    let ltx = db.transaction(store, modo);
-    return ltx.objectStore(store);
-}
 
 async function seleccionarImagen(image){
     let archivo = image.files[0];

@@ -30,10 +30,10 @@
                 </div>
             </nav>
             <div id="sistemApp">
-                <alumnos ref="alumno" v-show="forms['alumno'].mostrar"></alumnos>
-                {{-- <docentes ref="docente" v-show="forms['docente'].mostrar"></docentes>
-                <materias ref="materia" v-show="forms['materia'].mostrar"></materias>
-                <matriculas ref="matricula" v-show="forms['matricula'].mostrar"></alumnos> --}}
+                <alumno ref="alumno" v-show="forms['alumno'].mostrar"></alumno>
+                <docente ref="docente" v-show="forms['docente'].mostrar"></docente>
+                {{-- <materias ref="materia" v-show="forms['materia'].mostrar"></materias> --}}
+                {{-- <matriculas ref="matricula" v-show="forms['matricula'].mostrar"></alumnos> --}}
             </div>
         </div>
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Alumno extends Model
     {
     use HasFactory;
+    // protected $table = 'alumno';
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +19,11 @@ class Alumno extends Model
         'idAlumno',
         'codigo',
         'nombre',
-        'apellido',
+        'direccion',
+        'municipio',
+        'departamento',
+        'telefono',
+        'fechaNacimiento',
+        'sexo',
     ];
 }
