@@ -32,8 +32,8 @@
             <div id="sistemApp">
                 <alumno ref="alumno" v-show="forms['alumno'].mostrar"></alumno>
                 <docente ref="docente" v-show="forms['docente'].mostrar"></docente>
-                {{-- <materias ref="materia" v-show="forms['materia'].mostrar"></materias> --}}
-                {{-- <matriculas ref="matricula" v-show="forms['matricula'].mostrar"></alumnos> --}}
+                <materia ref="materia" v-show="forms['materia'].mostrar"></materia>
+                <matricula ref="matricula" v-show="forms['matricula'].mostrar"></matricula>
             </div>
         </div>
 

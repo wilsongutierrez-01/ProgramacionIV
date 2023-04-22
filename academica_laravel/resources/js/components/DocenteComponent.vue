@@ -25,15 +25,6 @@
                             </div>
                         </div>
                         <div class="row p-1">
-                            <div class="col-3 col-md-2">
-                                <label for="txtNombreDocente">APELLIDO:</label>
-                            </div>
-                            <div class="col-9 col-md-6">
-                                <input required pattern="[A-Za-zÑñáéíóú ]{3,75}"
-                                    v-model="docente.apellido" type="text" class="form-control" name="txtNombreDocente" id="txtNombreDocente">
-                            </div>
-                        </div>
-                        <div class="row p-1">
                             <div class="col-3 col-md-3">
                                 <input class="btn btn-primary" type="submit"
                                     value="Guardar">
@@ -78,6 +69,7 @@
 </template>
 
 <script>
+import axios from 'axios';
     export default{
         data(){
             return{
@@ -88,7 +80,6 @@
                     idDocente : '',
                     codigo : '',
                     nombre : '',
-                    apellido : '',
                     }
             }
         },
@@ -99,17 +90,23 @@
                     console.log( 'Por favor ingrese los datos correspondientes' );
                     return;
                 }
-                let store = abrirStore("tbldocentes", 'readwrite');
+                let store = this.abrirStore("tbldocentes", 'readwrite'),
+                    method = 'PUT';
                 if( this.accion==='nuevo' ){
+                    method = 'POST';
                     this.docente.idDocente = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal
                 }
+                axios({
+                    url     : 'docentes',
+                    method,
+                    data    : this.docente
+                }).then(resp => {
+                    console.log(resp);
+                }).catch(err => {
+                    console.log(err);
+                })
                 let query = store.put( JSON.parse( JSON.stringify(this.docente) ));
                 query.onsuccess = resp=>{
-                    fetch(`private/modulos/docentes/docentes.php?accion=${this.accion}&docente=${JSON.stringify(this.docente)}`)
-                    .then(resp=>resp.json())
-                    .then(resp=>{
-                        console.log(resp);
-                    });
                     this.nuevoDocente();
                     this.listar();
                 };
@@ -119,14 +116,18 @@
             },
             eliminarDocente(docente){
                 if( confirm(`Esta seguro de eliminar el docente ${docente.nombre}?`) ){
-                    let store = abrirStore('tbldocentes', 'readwrite'),
+                    axios({
+                        url     : 'docentes',
+                        method  : 'DELETE',
+                        data    : {idDocente : docente.idDocente}
+                    }).then(res => {
+                        console.log(res);
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                    let store = this.abrirStore('tbldocentes', 'readwrite'),
                         req = store.delete(docente.idDocente);
                     req.onsuccess = res=>{
-                        fetch(`private/modulos/docentes/docentes.php?accion=eliminar&docente=${JSON.stringify(this.docente)}`)
-                        .then(resp=>resp.json())
-                        .then(resp=>{
-                            console.log(resp);
-                        });
                         this.listar();
                     };
                     req.onerror = err=>{
@@ -139,7 +140,6 @@
                 this.docente.idDocente = '';
                 this.docente.codigo = '';
                 this.docente.nombre = '';
-                this.docente.apellido = '';
             },
             modificarDocente(docente){
                 this.accion = 'modificar';

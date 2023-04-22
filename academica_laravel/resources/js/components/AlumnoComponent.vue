@@ -103,7 +103,6 @@ import axios from 'axios';
     export default{
         data() {
             return {
-                db      : '',
                 buscar  : '',
                 alumnos : '',
                 accion  : 'nuevo',

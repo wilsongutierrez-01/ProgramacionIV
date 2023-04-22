@@ -8,6 +8,8 @@ import './bootstrap';
 import { createApp } from 'vue';
 import alumno from './components/AlumnoComponent.vue';
 import docente from './components/DocenteComponent.vue';
+import materia from './components/MateriaComponent.vue';
+import matricula from './components/MatriculaComponent.vue';
 window.db = '';
 
 
@@ -15,6 +17,8 @@ const app = createApp({
     components:{
         alumno,
         docente,
+        materia,
+        matricula,
     },
     data(){
         return{

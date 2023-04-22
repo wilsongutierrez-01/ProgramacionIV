@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Docente;
+use App\Models\Materia;
 use Illuminate\Http\Request;
 
-class DocenteController extends Controller
+class MateriaController extends Controller
 {
     public function index()
     {
-        return docente::get();
+        return materia::get();
     }
 
     public function create()
@@ -19,13 +19,13 @@ class DocenteController extends Controller
 
     public function store(Request $request)
     {
-        Docente::create($request->all());
+        Materia::create($request->all());
         return response()->json(['msg'=>'ok'], 200);
     }
 
-    public function show(Docente $docente)
+    public function show(Materia $materia)
     {
-        return $docente;
+        return $materia;
     }
 
     public function edit()
@@ -33,18 +33,18 @@ class DocenteController extends Controller
 
     }
 
-    public function update(Request $request, Docente $docente)
+    public function update(Request $request, Materia $materia)
     {
-        $docente:: where ('idDocente', $request['idDocente']) -> update([
+        $materia:: where ('idMateria', $request['idMateria']) -> update([
             'codigo' => $request['codigo'],
             'nombre' => $request['nombre'],
         ]);
         return response() -> json(['msg' => 'ok'], 200);
     }
 
-    public function destroy(Docente $docente, Request $request)
+    public function destroy(Materia $materia, Request $request)
     {
-        $docente :: where ('idDocente', $request['idDocente']) -> delete();
+        $materia :: where ('idMateria', $request['idMateria']) -> delete();
         return response() -> json(['msg' => 'ok'], 200);
     }
 }

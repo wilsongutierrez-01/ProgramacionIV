@@ -68,6 +68,7 @@
     </div>
 </template>
 <script>
+    import axios from 'axios';
     export default{
         data(){
             return{
@@ -82,6 +83,87 @@
             }
         },
         methods:{
+            nuevoMateria(){
+                this.accion = 'nuevo';
+                this.materia.idMateria = '';
+                this.materia.codigo = '';
+                this.materia.nombre = '';
+            },
+
+            modificarMateria(materia){
+                this.accion = 'modificar';
+                this.materia = materia;
+            },
+
+            guardarMateria(){
+                if( this.materia.nombre=='' ||
+                    this.materia.codigo=='' ){
+                    console.log( 'Por favor ingrese los datos correspondientes' );
+                    return;
+                }
+                let store = this.abrirStore("tblmaterias", 'readwrite'),
+                    method = 'PUT';
+                if( this.accion==='nuevo' ){
+                    method = 'POST';
+                    this.materia.idMateria = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal
+                }
+                let query = store.put( JSON.parse( JSON.stringify(this.materia) ));
+                query.onsuccess = resp=>{
+                    axios({
+                        url     : 'materias',
+                        method,
+                        data    :  this.materia
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                    this.nuevoMateria();
+                    this.listar();
+                };
+                query.onerror = err=>{
+                    console.error('ERROR al guardar Materia', err);
+                };
+            },
+
+            eliminarMateria(materia){
+                if( confirm(`Esta seguro de eliminar el autor ${materia.nombre}?`)){
+
+                    axios({
+                        url     : 'materias',
+                        method  : 'DELETE',
+                        data    : {idMateria : materia.idMateria}
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(err => {
+                        console.log(err);
+                    })
+
+                    let store = this.abrirStore('tblmaterias', 'readwrite'),
+                        req = store.delete(materia.idMateria);
+                    req.onsuccess = res => {
+                        this.listar();
+                    };
+                    req.onerror = err => {
+                        console.log("ERROR al eliminar materia")
+                    }
+                }
+            },
+
+            listar(){
+                let store = this.abrirStore('tblmaterias', 'readonly'),
+                data = store.getAll();
+                data.onsuccess = resp=>{
+                this.materias = data.result
+                .filter(materia=>materia.nombre.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 ||
+                    materia.codigo.indexOf(this.buscar)>-1);
+                }
+            },
+
+            abrirStore  (store, modo) {
+                let ltx = db.transaction(store, modo);
+                return ltx.objectStore(store);
+            },
 
         },
     }
