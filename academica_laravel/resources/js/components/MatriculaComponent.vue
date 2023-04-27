@@ -117,18 +117,18 @@
                 this.matricula.alumno.id = '';
                 this.matricula.alumno.label = '';
             },
-        modificarMatricula(matricula){
+            modificarMatricula(matricula){
                 this.accion = 'modificar';
                 this.matricula = matricula;
             },
-        guardarMatricula(){
+            guardarMatricula(){
                 if( this.matricula.alumno.id=='' ||
                     this.matricula.alumno.label=='' ||
                     this.matricula.fecha=='' ){
                     console.log( 'Por favor ingrese los datos correspondientes' );
                     return;
                 }
-                let store = abrirStore("tblmatriculas", 'readwrite');
+                let store = this.abrirStore("tblmatriculas", 'readwrite');
                 if( this.accion==='nuevo' ){
                     this.matricula.idMatricula = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal
                 }
@@ -141,9 +141,9 @@
                     console.error('ERROR al guardar matricula', err);
                 };
             },
-        eliminarMatricula(matricula){
+            eliminarMatricula(matricula){
                 if( confirm(`Esta seguro de eliminar el matricula ${matricula.nombre}?`) ){
-                    let store = abrirStore('tblmatriculas', 'readwrite'),
+                    let store = this.abrirStore('tblmatriculas', 'readwrite'),
                         req = store.delete(matricula.idMatricula);
                     req.onsuccess = res=>{
                         this.listar();
@@ -153,21 +153,25 @@
                     };
                 }
             },
-        listar(){
-                let store = abrirStore('tblmatriculas', 'readonly'),
+            listar(){
+                let store = this.abrirStore('tblmatriculas', 'readonly'),
                     data = store.getAll();
                 data.onsuccess = resp=>{
                     this.matriculas = data.result
                         .filter(matricula=>matricula.alumno.label.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 ||
                             matricula.fecha.indexOf(this.buscar)>-1);
                 };
-                let storeAlumno = abrirStore('tblalumnos', 'readonly'),
+                let storeAlumno = this.abrirStore('tblalumnos', 'readonly'),
                     datAlumno = storeAlumno.getAll();
                 datAlumno.onsuccess = resp=>{
                     this.alumnos = datAlumno.result.map(alumno=>{
                         return {id: alumno.idAlumno, label: alumno.nombre}
                     });
                 };
+            },
+            abrirStore  (store, modo) {
+                let ltx = db.transaction(store, modo);
+                return ltx.objectStore(store);
             },
         },
     }

@@ -111,18 +111,18 @@
                 this.inscripcion.materia.id    = '';
                 this.inscripcion.materia.label    = '';
             },
-        modificarInscripcion(inscripcion){
+            modificarInscripcion(inscripcion){
                 this.accion = 'modificar';
                 this.inscripcion = inscripcion;
             },
-        guardarInscripcion(){
+            guardarInscripcion(){
                 if( this.inscripcion.alumno.id=='' ||
                     this.inscripcion.alumno.label=='' ||
                     this.inscripcion.fecha=='' ){
                     console.log( 'Por favor ingrese los datos correspondientes' );
                     return;
                 }
-                let store = abrirStore("tblinscripciones", 'readwrite');
+                let store = this.abrirStore("tblinscripciones", 'readwrite');
                 if( this.accion==='nuevo' ){
                     this.inscripcion.idInscripcion = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal
                 }
@@ -135,9 +135,9 @@
                     console.error('ERROR al guardar inscripcion', err);
                 };
             },
-        eliminarInscripcion(inscripcion){
+            eliminarInscripcion(inscripcion){
                 if( confirm(`Esta seguro de eliminar el inscripcion ${inscripcion.nombre}?`) ){
-                    let store = abrirStore('tblinscripciones', 'readwrite'),
+                    let store = this.abrirStore('tblinscripciones', 'readwrite'),
                         req = store.delete(inscripcion.idInscripcion);
                     req.onsuccess = res=>{
                         this.listar();
@@ -147,29 +147,33 @@
                     };
                 }
             },
-        listar(){
-            let store = abrirStore('tblinscripciones', 'readonly'),
+            listar(){
+            let store = this.abrirStore('tblinscripciones', 'readonly'),
                 data = store.getAll();
-            data.onsuccess = resp=>{
-                this.inscripciones = data.result
-                    .filter(inscripcion=>inscripcion.alumno.label.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 ||
-                        inscripcion.fecha.indexOf(this.buscar)>-1);
-            };
-            let storeAlumno = abrirStore('tblalumnos', 'readonly'),
-                datAlumno = storeAlumno.getAll();
-            datAlumno.onsuccess = resp=>{
-                this.alumnos = datAlumno.result.map(alumno=>{
-                    return {id: alumno.idAlumno, label: alumno.nombre}
-                });
-            };
-            let storeMateria = abrirStore('tblmaterias', 'readonly'),
-            datMateria = storeMateria.getAll();
-            datMateria.onsuccess = resp=>{
-            this.materias = datMateria.result.map(materia=>{
-                    return {id: materia.idMateria, label: materia.nombre}
-                });
-            };
-        },
+                data.onsuccess = resp=>{
+                    this.inscripciones = data.result
+                        .filter(inscripcion=>inscripcion.alumno.label.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 ||
+                            inscripcion.fecha.indexOf(this.buscar)>-1);
+                };
+                let storeAlumno = this.abrirStore('tblalumnos', 'readonly'),
+                    datAlumno = storeAlumno.getAll();
+                datAlumno.onsuccess = resp=>{
+                    this.alumnos = datAlumno.result.map(alumno=>{
+                        return {id: alumno.idAlumno, label: alumno.nombre}
+                    });
+                };
+                let storeMateria = this.abrirStore('tblmaterias', 'readonly'),
+                datMateria = storeMateria.getAll();
+                datMateria.onsuccess = resp=>{
+                this.materias = datMateria.result.map(materia=>{
+                        return {id: materia.idMateria, label: materia.nombre}
+                    });
+                };
+            },
+            abrirStore  (store, modo) {
+                let ltx = db.transaction(store, modo);
+                return ltx.objectStore(store);
+            },
         },
     }
 </script>
