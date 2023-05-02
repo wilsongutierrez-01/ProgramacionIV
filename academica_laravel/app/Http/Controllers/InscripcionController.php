@@ -17,11 +17,27 @@ class InscripcionController extends Controller
 
     }
 
-    public function store(Request $request)
-    {
-        Inscripcion::create($request->all());
-        return response()->json(['msg'=>'ok'], 200);
-    }
+public function store(Request $request)
+{
+    $inscripcion = new Inscripcion;
+    $inscripcion->idInscripcion = $request->input('idInscripcion');
+    $inscripcion->fecha = $request->input('fecha');
+    $inscripcion->alumno_id = $request->input('alumno.id');
+    $inscripcion->alumno_name = $request->input('alumno.label');
+    $inscripcion->materia_id = $request->input('materia.id');
+    $inscripcion->materia_name = $request->input('materia.label');
+    $inscripcion->save();
+    return response()->json(['message' => 'Inscripción creada exitosamente'], 201);
+
+    // Inscripcion::create($request->all());
+    // return response()->json(['msg'=>'ok'], 200);
+}
+
+    // public function store(Request $request)
+    // {
+    //     Inscripcion::create($request->all());
+    //     return response()->json(['msg'=>'ok'], 200);
+    // }
 
     public function show(Inscripcion $docente)
     {
@@ -36,15 +52,20 @@ class InscripcionController extends Controller
     public function update(Request $request, Inscripcion $docente)
     {
         $docente:: where ('idInscripcion', $request['idInscripcion']) -> update([
-            'codigo' => $request['codigo'],
-            'nombre' => $request['nombre'],
+            'fecha' => $request['fecha'],
+            'alumno_id' => $request['alumno.id'],
+            'alumno_name' => $request['alumno.label'],
+            'materia_id' => $request['materia.id'],
+            'materia_name' => $request['materia.label'],
+
+
         ]);
         return response() -> json(['msg' => 'ok'], 200);
     }
 
-    public function destroy(Inscripcion $docente, Request $request)
+    public function destroy(Inscripcion $inscripcion, Request $request)
     {
-        $docente :: where ('idInscripcion', $request['idInscripcion']) -> delete();
+        $inscripcion :: where ('idInscripcion', $request['idInscripcion']) -> delete();
         return response() -> json(['msg' => 'ok'], 200);
     }
 }

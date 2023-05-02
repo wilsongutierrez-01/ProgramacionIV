@@ -106,6 +106,7 @@ import axios from 'axios';
                     console.log(err);
                 })
                 let query = store.put( JSON.parse( JSON.stringify(this.docente) ));
+                console.log(this.docente);
                 query.onsuccess = resp=>{
                     this.nuevoDocente();
                     this.listar();

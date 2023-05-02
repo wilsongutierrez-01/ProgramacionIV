@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import axios from 'axios';
     import  VueSelect  from 'vue-select'
     export default{
         components: {
@@ -90,14 +91,11 @@
                 inscripcion  : {
                     idInscripcion : '',
                     fecha       : '',
-                    alumno      : {
-                            id      : '',
-                            label   : ''
-                        },
+                    alumno      : '',
                     materia     : {
-                            id      : '',
-                            label   : ''
-                        }
+                        id      : '',
+                        label   : ''
+                    }
                 }
             }
         },
@@ -116,18 +114,34 @@
                 this.inscripcion = inscripcion;
             },
             guardarInscripcion(){
+                let glo = this.inscripcion.alumno.label;
+                console.log(this.inscripcion.alumno.id);
+                console.log(glo);
                 if( this.inscripcion.alumno.id=='' ||
                     this.inscripcion.alumno.label=='' ||
                     this.inscripcion.fecha=='' ){
                     console.log( 'Por favor ingrese los datos correspondientes' );
                     return;
                 }
-                let store = this.abrirStore("tblinscripciones", 'readwrite');
+                let store = this.abrirStore("tblinscripciones", 'readwrite'),
+                    method = 'PUT';
                 if( this.accion==='nuevo' ){
+                    method = 'POST';
                     this.inscripcion.idInscripcion = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal
                 }
                 let query = store.put( JSON.parse( JSON.stringify(this.inscripcion) ));
+
+                console.log(this.inscripcion);
                 query.onsuccess = resp=>{
+                    axios({
+                    url     : 'inscripciones',
+                    method,
+                    data    : this.inscripcion
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(err => {
+                        console.log(err);
+                    })
                     this.nuevoInscripcion();
                     this.listar();
                 };
@@ -137,6 +151,16 @@
             },
             eliminarInscripcion(inscripcion){
                 if( confirm(`Esta seguro de eliminar el inscripcion ${inscripcion.nombre}?`) ){
+                    axios({
+                        url     : 'inscripciones',
+                        method  : 'DELETE',
+                        data    : {idInscripcion :inscripcion.idInscripcion}
+                    }).then(resp => {
+                        console.log(resp);
+                    }).then(err => {
+                        console.log(err);
+                    })
+
                     let store = this.abrirStore('tblinscripciones', 'readwrite'),
                         req = store.delete(inscripcion.idInscripcion);
                     req.onsuccess = res=>{
@@ -148,8 +172,8 @@
                 }
             },
             listar(){
-            let store = this.abrirStore('tblinscripciones', 'readonly'),
-                data = store.getAll();
+                let store = this.abrirStore('tblinscripciones', 'readonly'),
+                    data = store.getAll();
                 data.onsuccess = resp=>{
                     this.inscripciones = data.result
                         .filter(inscripcion=>inscripcion.alumno.label.toLowerCase().indexOf(this.buscar.toLowerCase())>-1 ||

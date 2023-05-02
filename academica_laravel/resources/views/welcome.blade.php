@@ -39,11 +39,16 @@
         </div>
 
 
+
+
+        <script type="module" src="{{ mix('/resources/js/app.js') }}"></script>
+        <script type="module" src="{{ mix('/resources/js/imagen.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> NO soporta SFC con la CDN -->
         {{-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> --}}
         <script src="https://unpkg.com/vue-select@3.0.0"></script>
 
-        @vite('resources/js/app.js')
+        {{-- @vite('resources/js/app.js') --}}
+        {{-- @vite('resources/js/imagen.js') --}}
     </body>
 </html>
