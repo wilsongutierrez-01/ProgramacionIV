@@ -4,7 +4,7 @@ use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\InscripcionController;
-
+use App\Http\Controllers\MatriculaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,6 +48,13 @@ Route::controller(InscripcionController::class) -> group(function(){
     Route::post('/inscripciones', 'store');
     Route::put('/inscripciones', 'update');
     Route::delete('/inscripciones', 'destroy');
+});
+
+Route::controller(MatriculaController::class) -> group(function(){
+    Route::get('/matriculas', 'index');
+    Route::post('/matriculas', 'store');
+    Route::put('/matriculas', 'update');
+    Route::delete('/matriculas', 'destroy');
 });
 
 // Route::apiResources([

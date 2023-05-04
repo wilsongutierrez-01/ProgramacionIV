@@ -99,6 +99,7 @@
 
 <script>
 import axios from 'axios';
+import alertify from 'alertifyjs';
 
     export default{
         data() {
@@ -159,8 +160,15 @@ import axios from 'axios';
                     method,
                     data : this.alumno
                 }).then(resp => {
+
+                    if (resp.data.msg != 'ok'){
+                        alertify.error('Error al sincronizar' + resp.data.msg);
+                    }else{
+                        alertify.success('Alumno modificado');
+                    }
                     console.log(resp);
                 }).catch(error => {
+
                     console.error(error);
                 });
 

@@ -157,7 +157,7 @@ import axios from 'axios';
                         data    : {idInscripcion :inscripcion.idInscripcion}
                     }).then(resp => {
                         console.log(resp);
-                    }).then(err => {
+                    }).catch(err => {
                         console.log(err);
                     })
 

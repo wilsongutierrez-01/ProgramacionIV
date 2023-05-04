@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>::.. SISTEMA ACADEMICO UGB ..::</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://unpkg.com/vue-select@3.0.0/dist/vue-select.css">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <!-- Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+        <!-- Semantic UI theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+
     </head>
     <body>
+        <script type="module" src="{{ mix('/resources/js/app.js') }}"></script>
+        <script></script>
+
          <!-- Contenido de la pagina html -->
         <div class="container-fluid" id="app">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -41,7 +53,6 @@
 
 
 
-        <script type="module" src="{{ mix('/resources/js/app.js') }}"></script>
         <script type="module" src="{{ mix('/resources/js/imagen.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> NO soporta SFC con la CDN -->

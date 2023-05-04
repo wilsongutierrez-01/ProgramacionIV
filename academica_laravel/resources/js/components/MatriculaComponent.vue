@@ -4,7 +4,7 @@
             <div class="card border-primary">
                 <div class="card-header bg-primary text-white">REGISTRO DE MATRICULAS</div>
                 <div class="card-body">
-                    <form id="frmMatricula" @submit.prevent="guardarMatricula" @reset.prevent="nuevoMatricula()">
+                    <form id="frmMatricula" @submit.prevent="guardarMatricula" @reset.prevent="nuevoMatricula()" enctype="multipart/form-data">
                         <div class="row p-1">
                             <div class="col-3 col-md-2">ALUMNO:</div>
                             <div class="col-9 col-md-3">
@@ -32,7 +32,7 @@
                             <div class="col-9 col-md-10">
                                 <div class="input-group mb-3">
                                     <label class="input-group-text" for="inputGroupFile01">Subir comprobante</label>
-                                    <input type="file" accept="image/*" onChange="test(this)" class="form-control" id="inputGroupFile01">
+                                    <input type="file" accept="image/*" @change="seleccionarImagen" class="form-control" id="inputGroupFile01">
                                 </div>
                             </div>
                         </div>
@@ -84,8 +84,10 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
 
     import  VueSelect  from 'vue-select'
+    // import {seleccionarImagen} from '../../js/app.js'
     // import { seleccionarImagen } from '../app';
     export default{
         components: {
@@ -140,12 +142,53 @@
                     console.log( 'Por favor ingrese los datos correspondientes' );
                     return;
                 }
-                let store = this.abrirStore("tblmatriculas", 'readwrite');
+                let store = this.abrirStore("tblmatriculas", 'readwrite'),
+                    method = 'PUT';
                 if( this.accion==='nuevo' ){
+                    method = 'POST';
                     this.matricula.idMatricula = new Date().getTime().toString(16);//las cantidad milisegundos y lo convierte en hexadecimal
                 }
                 let query = store.put( JSON.parse( JSON.stringify(this.matricula) ));
                 query.onsuccess = resp=>{
+
+                    // // convierte la imagen base64 a un objeto Blob
+                    // const byteCharacters = atob(this.matricula.comprobante.split(',')[1]);
+                    // const byteNumbers = new Array(byteCharacters.length);
+                    // for (let i = 0; i < byteCharacters.length; i++) {
+                    //     byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    // }
+                    // const byteArray = new Uint8Array(byteNumbers);
+                    // const blob = new Blob([byteArray], { type: 'image/jpeg' });
+
+                    // // crea un objeto FormData y agrega el archivo
+                    // const formData = new FormData();
+                    // formData.append('comprobante', blob, 'comprobante.jpg');
+                    // formData.append('idMatricula', this.matricula.idMatricula);
+                    // formData.append('fecha', this.matricula.fecha);
+                    // formData.append('pago', this.matricula.pago);
+                    // formData.append('alumno_id', this.matricula.alumno.id);
+                    // formData.append('alumno_name', this.matricula.alumno.label);
+                    // envía la solicitud con axios
+                    axios({
+                        url: 'matriculas',
+                        method,
+                        data: this.matricula,
+                    }).then((resp) => {
+                        console.log(resp);
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+
+
+                    // axios({
+                    //     url     : 'matriculas',
+                    //     method,
+                    //     data    : this.matricula
+                    // }).then((resp) => {
+                    //     console.log(resp);
+                    // }).catch((err) => {
+                    //     console.log(err);
+                    // });
                     this.nuevoMatricula();
                     this.listar();
                 };
@@ -155,6 +198,15 @@
             },
             eliminarMatricula(matricula){
                 if( confirm(`Esta seguro de eliminar el matricula ${matricula.nombre}?`) ){
+                    axios({
+                        url: 'matriculas',
+                        method  : 'DELETE',
+                        data    : {idMatricula : matricula.idMatricula}
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(err =>{
+                        console.error('ERROR al eliminar matricula', err);
+                    })
                     let store = this.abrirStore('tblmatriculas', 'readwrite'),
                         req = store.delete(matricula.idMatricula);
                     req.onsuccess = res=>{
@@ -186,30 +238,55 @@
                 return ltx.objectStore(store);
             },
 
-            async seleccionarImagen(image){
+            seleccionarImagen(image){
+                const file = image.target.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                this.matricula.comprobante = reader.result;
+                };
+                // try{
+                //     let archivo = image.files[0];
+                //     if(archivo){
+                //         let blob = await img(archivo, 1),
+                //             reader = new FileReader();
+                //         reader.onload = e=>{
+                //             app.$refs.matricula.matricula.comprobante = e.target.result;
+                //             console.log(e.target.result);
+                //         };
+                //         reader.readAsDataURL(blob);
+                //         console.log('en el if')
+                //     }else {
+                //         console.log('en el else')
+
+                //         console.log("Poir favor seleccione una imagen validad...")
+                //     }
+
+                // }catch(err){
+                //     console.log(err);
+                // }
+
+            },
+            convertirBase64AFile(base64) {
+                const byteCharacters = atob(base64.split(',')[1]);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const file = new File([byteArray], 'comprobante.jpg', {type: 'image/jpeg'});
+                return file;
+            },
+            llamar(){
                 try{
-                    let archivo = image.files[0];
-                    if(archivo){
-                        let blob = await img(archivo, 1),
-                            reader = new FileReader();
-                        reader.onload = e=>{
-                            app.$refs.matricula.matricula.comprobante = e.target.result;
-                            console.log(e.target.result);
-                        };
-                        reader.readAsDataURL(blob);
-                        console.log('en el if')
-                    }else {
-                        console.log('en el else')
-
-                        console.log("Poir favor seleccione una imagen validad...")
-                    }
-
+                    ok();
                 }catch(err){
                     console.log(err);
                 }
-
             },
         },
     }
+
+
 </script>
 

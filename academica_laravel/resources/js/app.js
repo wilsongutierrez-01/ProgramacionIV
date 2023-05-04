@@ -31,6 +31,7 @@ const app = createApp({
                 alumno:{ mostrar:false, },
                 matricula:{ mostrar:false, },
                 inscripcion:{ mostrar:false, },
+                test : { mostrar : false, },
             }
         }
     },
@@ -70,7 +71,7 @@ const app = createApp({
 app.mount('#app');
 
 
-async function seleccionarImagen(image){
+async function seleccionarImagen(image, attempts = 3){
     try{
         let archivo = image.files[0];
         if(archivo){
@@ -91,14 +92,51 @@ async function seleccionarImagen(image){
         }else {
             console.log('en el else')
 
-            console.log("Poir favor seleccione una imagen validad...")
+            console.log("Por favor seleccione una imagen válida...")
         }
 
     }catch(err){
         console.error(err);
     }
 
+    // Condición de salida recursiva
+    if (attempts > 0) {
+        seleccionarImagen(image, attempts - 1);
+    } else {
+        console.log('La función recursiva ha terminado.');
+    }
 }
+
+
+// export async function seleccionarImagen(image){
+//     try{
+//         let archivo = image.files[0];
+//         if(archivo){
+//             try{
+//                 let blob = await img(archivo, 1),
+//                 reader = new FileReader();
+//                 reader.onload = e=>{
+//                     app.$refs.matricula.matricula.comprobante = e.target.result;
+//                     console.log(e.target.result);
+//                 };
+//                 reader.readAsDataURL(blob);
+//                 console.log('en el if')
+
+//             }catch (error){
+//                 console.error(error);
+//             }
+
+//         }else {
+//             console.log('en el else')
+
+//             console.log("Poir favor seleccione una imagen validad...")
+//         }
+
+//     }catch(err){
+//         console.error(err);
+//     }
+
+// }
 
 // const img=(archivo, calidad)=>{
 //     return new Promise((resolve, reject)=>{
