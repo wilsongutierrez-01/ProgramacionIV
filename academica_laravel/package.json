@@ -17,6 +17,7 @@
     "dependencies": {
         "alertifyjs": "^1.13.1",
         "canvas": "^2.11.2",
+        "express": "^4.18.2",
         "vue-select": "^4.0.0-beta.6"
     }
 }
