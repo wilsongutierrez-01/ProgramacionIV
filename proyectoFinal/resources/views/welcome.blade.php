@@ -2,7 +2,10 @@
 <html>
 <head>
     <title>Iniciar sesión</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url('../../resources/css/app.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('../css/app.css') }}"> --}}
+
 </head>
 <body>
     <div class="container">
@@ -12,7 +15,7 @@
         <form method="POST" action="/login" class="mt-4">
             @csrf
             <div class="form-group">
-                <label for="email">Correo electrónico</label>
+                <label for="email" class="correo">Correo electrónico</label>
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="form-group">
@@ -30,49 +33,6 @@
         <a href="/login/google" class="btn btn-danger">Iniciar sesión con Google</a>
         <a href="/login/facebook" class="btn btn-primary">Iniciar sesión con Facebook</a>
 
-<fb:login-button
-scope="public_profile,email"
-onlogin="checkLoginState();">
-</fb:login-button>
-    </div>
-
-
-<script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '{your-app-id}',
-        cookie     : true,
-        xfbml      : true,
-        version    : '{api-version}'
-      });
-
-      FB.AppEvents.logPageView();
-
-    };
-
-    (function(d, s, id){
-       var js, fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement(s); js.id = id;
-       js.src = "https://connect.facebook.net/en_US/sdk.js";
-       fjs.parentNode.insertBefore(js, fjs);
-     }(document, 'script', 'facebook-jssdk'));
-
-
-FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-});
-
-{
-    status: 'connected',
-    authResponse: {
-        accessToken: '...',
-        expiresIn:'...',
-        signedRequest:'...',
-        userID:'...'
-    }
-}
-  </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -31,7 +31,7 @@ Route::controller(LoginController::class) -> group(function(){
     Route::get('login/google', 'redirectToGoogle');
     Route::get('google-callback', 'handleGoogleCallback');
     Route::get('/logout', 'logout');
-    Route::get('/login/facebook', 'redirectToFacebook');
+    Route::get('login/facebook', 'redirectToFacebook');
     Route::get('facebook-callback', 'handleFacebookCallback');
 });
 
