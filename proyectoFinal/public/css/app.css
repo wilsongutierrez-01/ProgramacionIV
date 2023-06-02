@@ -1,0 +1,123 @@
+
+body{
+    background-image: url(/images/background-home.png);
+
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Estilos generales del formulario */
+.formulario {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+
+  }
+
+  /* Estilos para los campos de entrada */
+  .input-group {
+    margin-bottom: 15px;
+  }
+
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .input-group input[type="text"],
+  .input-group input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+  }
+
+  /* Estilos para los botones */
+  .button-group {
+    margin-top: 20px;
+  }
+
+  .button-group .button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .button-group .button:last-child {
+    margin-right: 0;
+  }
+
+  /* Estilos para los botones de inicio de sesión */
+
+  .flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .flex-proveedores{
+    margin-top: 20px;
+    position: relative;
+    margin-bottom: 10px;
+
+  }
+  .iniciar-session{
+
+    text-align: center;
+    background-color:#3742db ;
+    color: #fff;
+
+  }
+  .flex-proveedores .google-button {
+    background-color: #DB4437;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+  }
+
+  .flex-proveedores .facebook-button {
+    background-color: #3B5998;
+    color: #fff;
+    position: absolute;
+    top: 100%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Estilos adicionales para hacerlo amigable para niños */
+  .formulario {
+    background-color: #F5F5F5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .input-group input[type="text"],
+  .input-group input[type="password"] {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .button-group .button {
+    font-family: "Comic Sans MS", cursive;
+  }
+
+  /* Estilos adicionales para hacerlo más atractivo visualmente */
+  .formulario {
+    background-image: linear-gradient(to bottom, #FFF, #F2F2F2);
+  }
+
+  .button-group .button {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  }

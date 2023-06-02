@@ -9,42 +9,32 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="formulario">
-            <h2>Iniciar sesión</h2>
-            <div class="input-group">
-              <label for="usuario">Usuario:</label>
-              <input type="text" id="usuario" name="usuario" placeholder="Ingrese su usuario">
-            </div>
-            <div class="input-group">
-              <label for="contrasena">Contraseña:</label>
-              <input type="password" id="contrasena" name="contrasena" placeholder="Ingrese su contraseña">
-            </div>
-            <div class="button-group">
-                <div class="flex">
-                    <button type="submit" class="button iniciar-session">Iniciar sesión</button>
-
-                </div>
-                <div class="flex">
-
-                    <p>¿No tienes una cuenta? <a href="/registrar">Regístrate</a></p>
-
-                </div>
-                <div>
-                    <div class="flex-proveedores">
-                            <a href="/login/google" class="button google-button"> Google</a>
-                            {{-- <input class="button google-button"    href="/login/google" value="Google"> --}}
-
-                            <a href="/login/facebook" class="button facebook-button">Facebook</a>
-
-                            {{-- <input class="button facebook-button"  type="button" value="Facebook"> --}}
-                    </div>
-                </div>
-
-            </div>
+    <div class="formulario">
+        <h2>Iniciar sesión</h2>
+        <div class="input-group">
+          <label for="usuario">Usuario:</label>
+          <input type="text" id="usuario" name="usuario" placeholder="Ingrese su usuario">
+        </div>
+        <div class="input-group">
+            <label for="usuario">Correo:</label>
+            <input type="text" id="correo" name="correo" placeholder="Ingrese su correo">
           </div>
-    
-    </div>
+        <div class="input-group">
+          <label for="contrasena">Contraseña:</label>
+          <input type="password" id="contrasena" name="contrasena" placeholder="Ingrese su contraseña">
+        </div>
+        <div class="input-group">
+            <label for="contrasena">Confirme contraseña:</label>
+            <input type="password" id="contrasenaC" name="contrasenaC" placeholder="Confirme su contraseña">
+          </div>
+        <div class="button-group">
+            <div class="flex">
+                <button type="submit" class="button iniciar-session">Iniciar sesión</button>
+            </div>
+
+
+        </div>
+      </div>
     {{-- <div class="container">
         <h2 class="mt-4">Iniciar sesión</h2>
 

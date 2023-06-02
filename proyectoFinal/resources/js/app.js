@@ -3,37 +3,103 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
+// import img from 'imagen.js';
+// import {img}  from './imagen';
 import './bootstrap';
 import { createApp } from 'vue';
+import inicio from './components/InicioComponent.vue';
+// import docente from './components/DocenteComponent.vue';
+// import materia from './components/MateriaComponent.vue';
+// import matricula from './components/MatriculaComponent.vue';
+// import inscripcion from './components/InscripcionComponent.vue';
+window.db = '';
 
-/**
- * Next, we will create a fresh Vue application instance. You may then begin
- * registering components with the application instance so they are ready
- * to use in your application's views. An example is included for you.
- */
 
-const app = createApp({});
+const app = createApp({
+    components:{
+        inicio,
 
-import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
+    },
+    data(){
+        return{
+            forms:{
+                inicio:{ mostrar:false, },
+                // materia:{ mostrar:false, },
+                // alumno:{ mostrar:false, },
+                // matricula:{ mostrar:false, },
+                // inscripcion:{ mostrar:false, },
+                // test : { mostrar : false, },
+            }
+        }
+    },
+    methods: {
+        abrirFormulario(form){
+            this.forms[form].mostrar = !this.forms[form].mostrar;
+            this.$refs[form].listar();
+        },
+        // abrirBD(){
+        //     let indexDB = indexedDB.open('db_sistema_academico',1);
+        //     indexDB.onupgradeneeded=e=>{
+        //         let req = e.target.result,
+        //             tbldocentes = req.createObjectStore('tbldocentes', {keyPath:'idDocente'}),
+        //             tblalumnos = req.createObjectStore('tblalumnos',{keyPath:'idAlumno'}),
+        //             tblinscripciones = req.createObjectStore('tblinscripciones', {keyPath:'idInscripcion'}),
+        //             tblmaterias = req.createObjectStore('tblmaterias',{keyPath:'idMateria'}),
+        //             tblmatriculas = req.createObjectStore('tblmatriculas',{keyPath:'idMatricula'});
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-// Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {
-//     app.component(path.split('/').pop().replace(/\.\w+$/, ''), definition.default);
-// });
-
-/**
- * Finally, we will attach the application instance to a HTML element with
- * an "id" attribute of "app". This element is included with the "auth"
- * scaffolding. Otherwise, you will need to add an element yourself.
- */
+        //         tbldocentes.createIndex('idDocente', 'idDocente', {unique:true});
+        //         tblalumnos.createIndex('idAlumno', 'idAlumno', {unique:true});
+        //         tblmaterias.createIndex('idMateria', 'idMateria', {unique:true});
+        //         tblinscripciones.createIndex('idInscripcion', 'idInscripcion', {unique:true});
+        //     };
+        //     indexDB.onsuccess= e=>{
+        //         db = e.target.result;
+        //     };
+        //     indexDB.onerror= e=>{
+        //         console.error( e );
+        //     };
+        // },
+    },
+    created(){
+        // this.abrirBD();
+    }
+});
 
 app.mount('#app');
+
+
+async function seleccionarImagen(image, attempts = 3){
+    try{
+        let archivo = image.files[0];
+        if(archivo){
+            try{
+                let blob = await img(archivo, 1),
+                reader = new FileReader();
+                reader.onload = e=>{
+                    app.$refs.matricula.matricula.comprobante = e.target.result;
+                    console.log(e.target.result);
+                };
+                reader.readAsDataURL(blob);
+                console.log('en el if')
+
+            }catch (error){
+                console.error(error);
+            }
+
+        }else {
+            console.log('en el else')
+
+            console.log("Por favor seleccione una imagen válida...")
+        }
+
+    }catch(err){
+        console.error(err);
+    }
+
+    // Condición de salida recursiva
+    if (attempts > 0) {
+        seleccionarImagen(image, attempts - 1);
+    } else {
+        console.log('La función recursiva ha terminado.');
+    }
+}

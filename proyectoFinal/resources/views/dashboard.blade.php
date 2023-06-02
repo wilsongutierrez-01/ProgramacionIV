@@ -3,6 +3,8 @@
 <head>
     <title>Iniciar sesión</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
+
 </head>
 <body>
 
@@ -18,22 +20,22 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div class="navbar-nav">
-                                <a class="nav-link" @click="abrirFormulario('alumno')" href="#">Inicio</a>
-                                <a class="nav-link" @click="abrirFormulario('docente')" href="#">Contenido 1</a>
-                                <a class="nav-link" @click="abrirFormulario('materia')" href="#">Contenido 2</a>
-                                <a class="nav-link" @click="abrirFormulario('matricula')" href="#">Contenido 3</a>
-                                <a class="nav-link" @click="abrirFormulario('matricula')" href="#">Juegos</a>
+                                <a class="nav-link" @click="abrirFormulario('inicio')" href="#">Inicio</a>
+                                <a class="nav-link"  href="/conten1">Contenido 1</a>
+                                <a class="nav-link" href="/conten2">Contenido 2</a>
+                                <a class="nav-link" href="/conten3">Contenido 3</a>
+                                <a class="nav-link" href="/juegos">Juegos</a>
                                 <a class="nav-link" @click="abrirFormulario('inscripcion')" href="#">Acerca de</a>
                             </div>
                         </div>
                     </div>
                 </nav>
                 <div id="sistemApp">
-                    <alumno ref=#" v-show="forms['alumno'].mostrar"></alumno>
-                    <docente ref="#" v-show="forms['docente'].mostrar"></docente>
+                    <inicio ref=#" v-show="forms['inicio'].mostrar"></inicio>
+                    {{-- <docente ref="#" v-show="forms['docente'].mostrar"></docente>
                     <materia ref="#" v-show="forms['materia'].mostrar"></materia>
                     <matricula ref="#" v-show="forms['matricula'].mostrar"></matricula>
-                    <inscripcion ref="#" v-show="forms['inscripcion'].mostrar"></inscripcion>
+                    <inscripcion ref="#" v-show="forms['inscripcion'].mostrar"></inscripcion> --}}
                 </div>
             </div>
 
@@ -43,7 +45,11 @@
     <h2>Bienvenido a Educame</h2>
 
 
+    @vite('resources/js/app.js')
     <a href="/logout" class="btn btn-danger">cerrar sesion</a>
+
+    {{-- <script type="module" src="{{ mix('/resources/js/app.js') }}"></script> --}}
+
 
     {{-- <form action="{{ route('logout') }}" method="POST">
         @csrf

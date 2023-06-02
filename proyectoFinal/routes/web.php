@@ -23,6 +23,26 @@ Route::get('/dashboard', function(){
     return view('dashboard');
 });
 
+Route::get('/registrar', function(){
+    return view('registrar');
+});
+
+Route::get('/conten1', function(){
+    return view('contenido1');
+});
+Route::get('/conten2', function(){
+    return view('contenido2');
+});
+Route::get('/conten3', function(){
+    return view('contenido3');
+});
+Route::get('/juegos', function(){
+    return view('juegos');
+});
+
+
+// /conten1
+
 // Route::get('login/google', function () {
 //     return Socialite::driver('google')->redirect();
 // });
