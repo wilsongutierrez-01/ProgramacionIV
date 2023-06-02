@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Iniciar sesión</title>
+    <title>Educame</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
 
@@ -12,7 +12,9 @@
             <div class="container-fluid" id="app">
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Educame</a>
+                        <a class="navbar-brand" href="#">
+                            <img src="images/icon.png" alt="Logo" style="width: 175px; height: 100px;" >
+                        </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="npofalse"
                             aria-label="Toggle navigation">
@@ -42,11 +44,10 @@
             <div>
                 <br>
             </div>
-    <h2>Bienvenido a Educame</h2>
+    <h3>Bienvenido a Educame</h3>
 
 
     @vite('resources/js/app.js')
-    <a href="/logout" class="btn btn-danger">cerrar sesion</a>
 
     {{-- <script type="module" src="{{ mix('/resources/js/app.js') }}"></script> --}}
 

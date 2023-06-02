@@ -1,0 +1,89 @@
+
+/* ***********************************
+for contennt 1
+*********************************
+*/
+.container {
+    text-align: center;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 30px;
+    color: #ff7f50;
+  }
+
+  .card {
+    margin: 20px auto;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .card h2 {
+    color: #ff7f50;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    font-size: 18px;
+  }
+
+  .card:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .card p:hover {
+    color: #ff7f50;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+  }
+
+
+  /* for btn regresar */
+  .btn-regresar {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-regresar:hover {
+    background-color: darkblue;
+}
+
+.btn-regresar:focus {
+    outline: none;
+}
+
+.btn-regresar:active {
+    background-color: blue;
+    transform: translateY(1px);
+}
+
+
+/* *******************************************
+  end content1
+  ****************************************************
+  */
+
+/*
+********************
+for adding a video
+*********************************
+*/
+video {
+    width: 100%;
+    max-width: 600px;
+  }
+.mediaV {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}

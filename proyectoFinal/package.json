@@ -16,6 +16,7 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
-        "express": "^4.18.2"
+        "express": "^4.18.2",
+        "vue2-animate": "^2.1.4"
     }
 }

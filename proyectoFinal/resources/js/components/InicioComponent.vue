@@ -1,49 +1,39 @@
 <template>
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-header">REGISTRO DE DOCENTE</div>
-                <div class="card-body">
-                    <form id="frmDocente" @reset.prevent="nuevoDocente" v-on:submit.prevent="guardarDocente">
-                        <div class="row p-1">
-                            <div class="col-3 col-md-2">
-                                <label for="txtCodigoDocente">CODIGO:</label>
-                            </div>
-                            <div class="col-3 col-md-3">
-                                <input required pattern="[0-9]{3}"
-                                    title="Ingrese un codigo de docente de 3 digitos"
-                                        v-model="docente.codigo" type="text" class="form-control" name="txtCodigoDocente" id="txtCodigoDocente">
-                            </div>
-                        </div>
-                        <div class="row p-1">
-                            <div class="col-3 col-md-2">
-                                <label for="txtNombreDocente">NOMBRE:</label>
-                            </div>
-                            <div class="col-9 col-md-6">
-                                <input required pattern="[A-Za-zÑñáéíóú ]{3,75}"
-                                    v-model="docente.nombre" type="text" class="form-control" name="txtNombreDocente" id="txtNombreDocente">
-                            </div>
-                        </div>
-                        <div class="row p-1">
-                            <div class="col-3 col-md-3">
-                                <input class="btn btn-primary" type="submit"
-                                    value="Guardar">
-                            </div>
-                            <div class="col-3 col-md-3">
-                                <input class="btn btn-warning" type="reset" value="Nuevo">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <form method="POST" action="{{ route('perfil.actualizar') }}" class="mt-4 formulario-ninos">
+       <h3> @csrf</h3>
+        @method('PUT')
+
+        <div class="form-group">
+            <label for="name">Nombre de usuario</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ $user->name ?? '' }}">
         </div>
-    </div>
+
+        <div class="form-group">
+            <label for="lastname">Apellido de usuario</label>
+            <input type="text" class="form-control" id="lastname" name="lastname" value="{{ $user->lastname ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Correo</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ $user->email ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+        <transition>
+            <a href="/logout" class="btn-cerrar-sesion">cerrar sesion</a>
+        </transition>
+
+    </form>
+
 
 </template>
 
 <script>
 import axios from 'axios';
     export default{
+
         data(){
             return{
                 accion:'nuevo',
