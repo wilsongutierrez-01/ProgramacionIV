@@ -26,6 +26,8 @@ class LoginController extends Controller
 
         $userExists = User::where('external_id', $user->id)->where('external_auth', 'google')->first();
 
+        global $infoUser;
+        $infoUser = $userExists;
         if ($userExists) {
             Auth::login($userExists);
         } else {
@@ -39,37 +41,7 @@ class LoginController extends Controller
             Auth::login($userNew);
         }
 
-        // $user = Socialite::driver('google')->user();
-
-        // $userExists = User::where('external_id', $user->id)->where('external_auth', 'google')->exists();
-
-        // if($userExists){
-        //     Auth::login($userExists);
-        // }else{
-        //     $userNew = User::create([
-        //         'name' => $user->name,
-        //         'email' => $user->email,
-        //         // 'password' => $user->password,
-        //         'avatar' => $user->avatar,
-        //         'external_id' => $user->id,
-        //         'external_auth' => 'google',
-
-        //     ]);
-        //     Auth::login($userNew);
-        // }
-
-        return redirect('/dashboard');
-        // dd($user);
-
-        // Aquí puedes realizar las acciones necesarias con los datos del usuario
-
-        // Por ejemplo, puedes autenticar al usuario en tu aplicación
-        // utilizando el ID de correo electrónico único de Google
-
-        // Si el usuario ya existe, inicia sesión con su cuenta
-        // Si no existe, crea un nuevo usuario con los datos proporcionados por Google
-
-        // Luego, redirige al usuario a la página de inicio de tu aplicación
+        return view('dashboard')->with('user', $userExists);
     }
 
     public function logout(Request $request)

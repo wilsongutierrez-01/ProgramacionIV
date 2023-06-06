@@ -12,7 +12,7 @@
 <div class="container-fluid" id="app">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/perfil">
                 {{-- <img src="images/backgr.jpg" alt="Logo" style="width: 175px; height: 100px;"> --}}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -22,7 +22,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link" @click="abrirFormulario('inicio')" href="#">Inicio</a>
+                    <a class="nav-link" href="/dashboard">Perfil</a>
                     <a class="nav-link" href="/conten1">Contenido 1</a>
                     <a class="nav-link" href="/conten2">Contenido 2</a>
                     <a class="nav-link" href="/conten3">Contenido 3</a>
@@ -40,3 +40,4 @@
         <inscripcion ref="#" v-show="forms['inscripcion'].mostrar"></inscripcion> --}}
     </div>
 </div>
+

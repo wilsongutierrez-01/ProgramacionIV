@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\UserController;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\UsuarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +17,9 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
+/*********************************************** */
+// Controll all views
+//******************************************** */
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,6 +27,13 @@ Route::get('/', function () {
 Route::get('/dashboard', function(){
     return view('dashboard');
 });
+
+// Route::get('/perfil', function(){
+//     return view('perfil');
+// });
+
+Route::get('/perfil', [UserController::class, 'showProfile'])->name('perfil');
+
 
 Route::get('/registrar', function(){
     return view('registrar');
@@ -40,6 +52,20 @@ Route::get('/juegos', function(){
     return view('juegos');
 });
 
+Route::get('/ePerfilKid', function(){
+    return view('editarPerfilN');
+});
+
+//****************************************** */
+
+// contoll user information
+
+
+
+Route::get('/usuarios/{id}',[UsuarioController::class,'show'])->name('usuario.show');
+
+
+//*************************** */
 
 // /conten1
 

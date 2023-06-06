@@ -253,9 +253,12 @@ for h3
     animation: bounce 5s infinite;
   }
 /*
+********************************************************************
+all buttons designs
+******************************************************************** */
 
 /* *******************************************
-log out
+log out button
 ***********************************************
 */
 @keyframes pulse {
@@ -281,6 +284,20 @@ log out
     animation: pulse 1s infinite;
   }
 
+  .btn-editar {
+    background-color: rgb(0, 247, 255);
+    color: #0e0d0d;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 25px;
+
+  }
+
+/*
+  end buttons designs */
 
   /*
   for a nav
@@ -312,11 +329,11 @@ log out
   }
 .navbar-brand{
     display: inline-block;
-    padding: 50px 100px;
+    padding: 50px 50px;
     font-size: 10px;
     text-decoration: none;
     color: #000000;
-    background-image: url(/images/backgr.jpg);
+    background-image: url(/images/boy.png);
     border-radius: 80px;
     transition: background-color 0.3s ease;
 
@@ -433,3 +450,12 @@ video {
 *********************
 end content 1
 ********************* */
+
+
+/* ------------------------------------------
+Infantil Profile
+----------------------------------------- */
+
+
+
+
