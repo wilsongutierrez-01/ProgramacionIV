@@ -14,7 +14,10 @@
         <input type="email" class="form-control" id="email" name="email" value="{{ $user->email ?? '' }}" readonly>
     </div>
     <div class="form-group">
-        <a href="/ePerfilKid" class="btn-editar">Editar perfil infantil</a>
+        <a href="/perfilInfantil" class="btn-editar">Editar perfil infantil</a>
+    </div>
+    <div class="form-group">
+        <a href="/showInfo" class="btn-editar">perfil infantil</a>
     </div>
     <transition>
         <a href="/logout" class="btn-cerrar-sesion">cerrar sesion</a>
@@ -23,7 +26,7 @@
  </form>
  @if(isset($user))
  <!-- Mostrar contenido del encabezado para usuarios autenticados -->
- <p>Bienvenido, {{ $user->name }}</p>
+ <p>Bienvenido, ....{{ $user->name }}</p>
  <!-- Otros elementos del encabezado específicos para usuarios autenticados -->
  <h1>Detalles del Usuario</h1>
  <p>Nombre: {{ $user->name }}</p>

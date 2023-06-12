@@ -24,6 +24,15 @@ class UsuarioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function showUserInfantil($id)
+    {
+        $usuario = Usuario::find($id);
+
+        if (!$usuario) {
+            return redirect()->back()->with('error', 'El usuario no existe');
+        }
+        return view('show', compact('usuario'));
+    }
     public function create()
     {
         //

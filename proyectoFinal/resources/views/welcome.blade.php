@@ -43,7 +43,7 @@
 
             </div>
           </div>
-    
+
     </div>
     {{-- <div class="container">
         <h2 class="mt-4">Iniciar sesión</h2>
@@ -73,3 +73,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
+
+

@@ -22,4 +22,24 @@ class UserController extends Controller
         return view('perfil')->with('user',$user);
 
     }
+
+    public function showProfileInfantil()
+    {
+        //get data user
+        $user = auth()->user();
+
+        //return a view with data user
+        return view('editarPerfilN')->with('user',$user);
+
+    }
+    public function showInfo()
+    {
+        //get data user
+        $user = auth()->user();
+
+        //return a view with data user
+        return view('infantilPerfl')->with('userI',$user);
+
+    }
+
 }

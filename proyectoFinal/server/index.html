@@ -1,49 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Perfil</title>
-    <link rel="stylesheet" href="{{ asset('/css/bstyles.css') }}">
 
-</head>
-<body>
-    <h1>Perfil Infantil</h1>
-    <form method="POST" id="frmKid">
-        <div class="form-group">
-            <label for="nombres">Nombres:</label>
-            <input type="text" id="nombres" name="nombres" required>
-        </div>
-        <div class="form-group">
-            <label for="apellidos">Apellidos:</label>
-            <input type="text" id="apellidos" name="apellidos" required>
-        </div>
-        <div class="form-group">
-            <label for="edad">Edad:</label>
-            <input type="number" id="edad" name="edad" min="10" max="15" required>
-        </div>
-        <input type="submit" value="Guardar" class="btn-cerrar-sesion">
-    </form>
+    <h1>Perfil de Usuario</h1>
+    <div id="profile">
+        <p><strong>Nombre:</strong> <span id="name"></span></p>
+        <p><strong>Apellidos:</strong> <span id="lastname"></span></p>
+        <p><strong>Edad:</strong> <span id="age"></span></p>
+        <img id="image" src="" alt="Imagen del perfil">
+    </div>
 
     <script>
-        frmKid.addEventListener('submit', event => {
-            event.preventDefault();
+        function mostrarDatosUsuario(user) {
+            document.getElementById('name').textContent = user.nombres;
+            document.getElementById('lastname').textContent = user.apellidos;
+            document.getElementById('age').textContent = user.edad;
+            document.getElementById('image').src = user.image.filename;
+        }
 
-            const data = {
-                nombres: nombres.value,
-                apellidos: apellidos.value,
-                edad: edad.value
-            };
-            fetch('kid/guardar', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers:{
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(resp => resp.json())
-            .then(resp => {
-                console.console.log(resp);
-            });
+        function obtenerDatosUsuario() {
+            fetch('http://127.0.0.1:3001/usuarios/listar')
+                .then(response => response.json())
+                .then(user => {
+                    mostrarDatosUsuario(user);
+                })
+                .catch(error => console.error(error));
+        }
+
+        document.addEventListener("DOMContentLoaded", event => {
+            obtenerDatosUsuario();
         });
     </script>
-</body>
+
+
+
+
+
+
+
+
+
+
+
+
 </html>

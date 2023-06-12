@@ -8,6 +8,11 @@
 <body>
     <h1>Perfil Infantil</h1>
     <form method="POST" id="frmKid">
+        <input type="text" id="idProfile" name="idProfile" style="display: none" value="{{$user->external_id}}">
+        <div class="form-group">
+            <label for="image">Elegir foto de perfil</label>
+            <input type="file" name="image" id="image" accept="image/*" required>
+        </div>
         <div class="form-group">
             <label for="nombres">Nombres:</label>
             <input type="text" id="nombres" name="nombres" required>
@@ -22,28 +27,58 @@
         </div>
         <input type="submit" value="Guardar" class="btn-cerrar-sesion">
     </form>
-
+</form>
+@if(isset($user))
+<!-- Mostrar contenido del encabezado para usuarios autenticados -->
+<p>Bienvenido, ....{{ $user->name }}</p>
+<!-- Otros elementos del encabezado específicos para usuarios autenticados -->
+<h1>Detalles del Usuario</h1>
+<p>Nombre: {{ $user->external_id }}</p>
+<p>Email: {{ $user->email }}</p>
+@else
+<!-- Mostrar contenido del encabezado para usuarios no autenticados -->
+<a href="/login">Iniciar sesión</a>
+<!-- Otros elementos del encabezado específicos para usuarios no autenticados -->
+@endif
     <script>
-        frmKid.addEventListener('submit', event => {
-            event.preventDefault();
+        // frmKid.addEventListener('submit', event => {
+        //     event.preventDefault();
 
-            const data = {
-                nombres: nombres.value,
-                apellidos: apellidos.value,
-                edad: edad.value
-            };
-            fetch('kid/guardar', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers:{
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(resp => resp.json())
-            .then(resp => {
-                console.console.log(resp);
-            });
-        });
+        //     const data = {
+        //         nombres: nombres.value,
+        //         apellidos: apellidos.value,
+        //         edad: edad.value
+        //     };
+        //     fetch('kid/guardar', {
+        //         method: 'POST',
+        //         body: JSON.stringify(data),
+        //         headers:{
+        //             'Content-Type': 'application/json',
+        //         }
+        //     })
+        //     .then(resp => resp.json())
+        //     .then(resp => {
+        //         console.console.log(resp);
+        //     });
+        // });
+
+        document.getElementById('frmKid').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const form = document.getElementById('frmKid');
+        const formData = new FormData(form);
+
+        fetch('http://127.0.0.1:3001/kid/save', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.text())
+        .then(message => {
+          alert(message);
+          form.reset();
+        })
+        .catch(error => console.error(error));
+      });
     </script>
 </body>
 </html>
