@@ -22,7 +22,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link" href="/dashboard">Perfil</a>
+                    <a class="nav-link" href="/dashboard">Chat</a>
                     <a class="nav-link" href="/conten1">Contenido 1</a>
                     <a class="nav-link" href="/conten2">Contenido 2</a>
                     <a class="nav-link" href="/conten3">Contenido 3</a>

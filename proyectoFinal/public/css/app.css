@@ -9,7 +9,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+
 }
 
 /* Estilos generales del formulario */
@@ -216,13 +216,14 @@ form {
 /* Estilos para el formulario específico para niños */
 .formulario-ninos label {
     font-size: 18px;
-    color: #ff00ff; /* Color morado */
+    color: #350735; /* Color morado */
   }
 
   .formulario-ninos input[type="text"],
   .formulario-ninos input[type="email"] {
-    font-size: 16px;
-    background-color: #ffff00; /* Color amarillo */
+    font-style: bold;
+    font-size: 20px;
+    background-color: #e7e76f; /* Color amarillo */
   }
 
   .formulario-ninos button {
@@ -349,6 +350,10 @@ Contanier for content 1
 .contentP{
     display: none;
 }
+.contentPA{
+    display: none;
+    color: chartreuse;
+}
 /*
 ********************** */
 
@@ -385,6 +390,11 @@ Contanier for content 1
   .card p {
     font-size: 18px;
     color: #ddd;
+  }
+  .card li {
+    font-size: 18px;
+    color: #ddd;
+    cursor: pointer;
   }
 
   .card:hover {
@@ -458,4 +468,85 @@ Infantil Profile
 
 
 
+/* -------------------------------------
+para las preguntas
+----------------------------------- */
+.preguntas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f2f2f2;
+}
 
+#question-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#question {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#answers {
+    list-style-type: none;
+    padding: 0;
+    cursor: default;
+}
+
+#answers li {
+    margin-bottom: 20px;
+}
+
+#answers button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#answers button:hover {
+    background-color: #45a049;
+}
+/*
+----------------------------------------------------- */
+
+/* ++++++++++++++++++++++++++++++++++++++++
+para el perfil del peque
+++++++++++++++++++++++++++++++++++++++ */
+
+#image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/*
++++++++++++++++++++++++++++++++++++ */
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Diseño para ahorro y financiacion */
+.tittle{
+    font-size: 50px;
+    color: #ff7f50;
+}
+.tittle h1{
+    font-size: 50px;
+    background-color: #421111;
+    border-radius: 30px;
+    padding: 20px;
+
+}
+/*
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */

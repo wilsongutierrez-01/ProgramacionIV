@@ -25,15 +25,19 @@
             <label for="edad">Edad:</label>
             <input type="number" id="edad" name="edad" min="10" max="15" required>
         </div>
-        <input type="submit" value="Guardar" class="btn-cerrar-sesion">
+        <button id="submit" style="visibility: visible" >Guardar</button>
+
+        <button id="submit-btn" style="visibility: hidden" >Ir a perfil</button>
+
+
     </form>
-</form>
+
 @if(isset($user))
 <!-- Mostrar contenido del encabezado para usuarios autenticados -->
-<p>Bienvenido, ....{{ $user->name }}</p>
+
 <!-- Otros elementos del encabezado específicos para usuarios autenticados -->
 <h1>Detalles del Usuario</h1>
-<p>Nombre: {{ $user->external_id }}</p>
+<p>Nombre: {{ $user->name }}</p>
 <p>Email: {{ $user->email }}</p>
 @else
 <!-- Mostrar contenido del encabezado para usuarios no autenticados -->
@@ -41,6 +45,9 @@
 <!-- Otros elementos del encabezado específicos para usuarios no autenticados -->
 @endif
     <script>
+        document.getElementById('submit-btn').addEventListener('click', function() {
+        window.location.href = 'http://127.0.0.1:8000/showInfo'; // Reemplaza 'https://www.tupagina.com' con la URL de tu página principal
+    });
         // frmKid.addEventListener('submit', event => {
         //     event.preventDefault();
 
@@ -61,9 +68,14 @@
         //         console.console.log(resp);
         //     });
         // });
+        const perfilButton = document.getElementById('submit-btn');
+        const guardarButton = document.getElementById('submit')
 
         document.getElementById('frmKid').addEventListener('submit', function (event) {
         event.preventDefault();
+        guardarButton.style.visibility = 'hidden';
+        perfilButton.style.visibility = 'visible';
+
 
         const form = document.getElementById('frmKid');
         const formData = new FormData(form);

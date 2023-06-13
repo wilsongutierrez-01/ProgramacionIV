@@ -11,31 +11,33 @@
 <body>
     <div class="container">
         <div class="formulario">
-            <h2>Iniciar sesión</h2>
-            <div class="input-group">
+            <h2>Por favor inicia sesión con tu cuenta de google</h2>
+            {{-- <div class="input-group">
               <label for="usuario">Usuario:</label>
               <input type="text" id="usuario" name="usuario" placeholder="Ingrese su usuario">
-            </div>
+            </div> --}}
             <div class="input-group">
-              <label for="contrasena">Contraseña:</label>
-              <input type="password" id="contrasena" name="contrasena" placeholder="Ingrese su contraseña">
+              <label for="contrasena">La mejor inversión en nuestros niños es enseñarles a invertir.</label>
+              {{-- <input type="password" id="contrasena" name="contrasena" placeholder="Ingrese su contraseña"> --}}
             </div>
             <div class="button-group">
                 <div class="flex">
-                    <button type="submit" class="button iniciar-session">Iniciar sesión</button>
+                    {{-- <a href="/login/google" class="button google-button"> Google</a> --}}
+
+                    {{-- <button type="submit" class="button iniciar-session">Iniciar sesión</button> --}}
 
                 </div>
                 <div class="flex">
 
-                    <p>¿No tienes una cuenta? <a href="/registrar">Regístrate</a></p>
+                    {{-- <p>¿No tienes una cuenta? <a href="/registrar">Regístrate</a></p> --}}
 
                 </div>
                 <div>
                     <div class="flex-proveedores">
-                            <a href="/login/google" class="button google-button"> Google</a>
+                            <a href="/login/google" class="button google-button"> Iniciar...</a>
                             {{-- <input class="button google-button"    href="/login/google" value="Google"> --}}
 
-                            <a href="/login/facebook" class="button facebook-button">Facebook</a>
+                            {{-- <a href="/login/facebook" class="button facebook-button">Facebook</a> --}}
 
                             {{-- <input class="button facebook-button"  type="button" value="Facebook"> --}}
                     </div>

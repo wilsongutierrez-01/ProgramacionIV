@@ -41,7 +41,7 @@ class LoginController extends Controller
             Auth::login($userNew);
         }
 
-        return view('dashboard')->with('user', $userExists);
+        return view('perfil')->with('user', $userExists);
     }
 
     public function logout(Request $request)

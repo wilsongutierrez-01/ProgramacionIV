@@ -13,27 +13,19 @@
         <label for="email">Correo</label>
         <input type="email" class="form-control" id="email" name="email" value="{{ $user->email ?? '' }}" readonly>
     </div>
+    {{-- <br>
     <div class="form-group">
         <a href="/perfilInfantil" class="btn-editar">Editar perfil infantil</a>
-    </div>
+    </div> --}}
+    <br>
     <div class="form-group">
-        <a href="/showInfo" class="btn-editar">perfil infantil</a>
+        <a href="/showInfo" class="btn-editar">Perfil infantil</a>
     </div>
+    <br>
     <transition>
-        <a href="/logout" class="btn-cerrar-sesion">cerrar sesion</a>
+        <a href="/logout" class="btn-cerrar-sesion">Cerrar sesion</a>
     </transition>
 
  </form>
- @if(isset($user))
- <!-- Mostrar contenido del encabezado para usuarios autenticados -->
- <p>Bienvenido, ....{{ $user->name }}</p>
- <!-- Otros elementos del encabezado específicos para usuarios autenticados -->
- <h1>Detalles del Usuario</h1>
- <p>Nombre: {{ $user->name }}</p>
- <p>Email: {{ $user->email }}</p>
-@else
- <!-- Mostrar contenido del encabezado para usuarios no autenticados -->
- <a href="/login">Iniciar sesión</a>
- <!-- Otros elementos del encabezado específicos para usuarios no autenticados -->
-@endif
 
+@include('footer')

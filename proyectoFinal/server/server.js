@@ -111,36 +111,90 @@ const upload = multer({ storage });
 //     res.status(500).send('Error al guardar la imagen');
 //     }
 // });
+// app.post('/kid/save', upload.single('image'), async (req, res) => {
+//     try {
+//     const { filename, mimetype, size } = req.file;
+//     const { idProfile,nombres, apellidos, edad } = req.body;
+
+//       // Conectar a la base de datos
+//     const db = await conectarMongoDb();
+
+//       // Insertar la información del niño y la imagen en la colección
+//     const collection = db.collection('kids');
+//     await collection.insertOne({
+//         _id: idProfile,
+//         nombres,
+//         apellidos,
+//         edad,
+//         image: {
+//         filename,
+//         mimetype,
+//         size,
+//         uploadedAt: new Date()
+//         }
+//     });
+
+//       // Devolver una respuesta al cliente
+//     res.send('Información guardada correctamente');
+//     } catch (error) {
+//     console.error('Error al guardar la información:', error);
+//     res.status(500).send('Error al guardar la información');
+//     }
+// });
 app.post('/kid/save', upload.single('image'), async (req, res) => {
     try {
     const { filename, mimetype, size } = req.file;
-    const { idProfile,nombres, apellidos, edad } = req.body;
+    const { idProfile, nombres, apellidos, edad } = req.body;
 
       // Conectar a la base de datos
     const db = await conectarMongoDb();
 
-      // Insertar la información del niño y la imagen en la colección
+      // Buscar el niño en la colección
     const collection = db.collection('kids');
-    await collection.insertOne({
+    const existingKid = await collection.findOne({ _id: idProfile });
+
+    if (existingKid) {
+        // El niño ya existe, actualizar el registro
+        await collection.updateOne(
+        { _id: idProfile },
+        {
+            $set: {
+            nombres,
+            apellidos,
+            edad,
+            image: {
+                filename,
+                mimetype,
+                size,
+                uploadedAt: new Date(),
+            },
+            },
+        }
+        );
+    } else {
+        // El niño no existe, crear un nuevo registro
+        await collection.insertOne({
         _id: idProfile,
         nombres,
         apellidos,
         edad,
         image: {
-        filename,
-        mimetype,
-        size,
-        uploadedAt: new Date()
-        }
-    });
+            filename,
+            mimetype,
+            size,
+            uploadedAt: new Date(),
+        },
+        });
+    }
 
       // Devolver una respuesta al cliente
-    res.send('Información guardada correctamente');
+        res.send('Información guardada correctamente');
     } catch (error) {
-    console.error('Error al guardar la información:', error);
-    res.status(500).send('Error al guardar la información');
+        console.error('Error al guardar la información:', error);
+        res.status(500).send('Error al guardar la información');
     }
 });
+
 
 //mostrar la imagen
 // app.use('/uploads', express.static('uploads'));

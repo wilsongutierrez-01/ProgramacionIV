@@ -44,6 +44,11 @@ Route::get('/registrar', function(){
 Route::get('/conten1', function(){
     return view('contenido1');
 });
+
+Route::get('/ahorroF', function(){
+    return view('ahorroFinanciacion');
+});
+
 Route::get('/conten2', function(){
     return view('contenido2');
 });
@@ -51,7 +56,7 @@ Route::get('/conten3', function(){
     return view('contenido3');
 });
 Route::get('/juegos', function(){
-    return view('juegos');
+    return view('minijuego');
 });
 
 Route::get('/ePerfilKid', function(){

@@ -1,38 +1,42 @@
 @include('header')
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Mini juego tipo quiz</title>
-</head>
-<body>
-  <h1>Mini juego tipo quiz</h1>
 
-  <div id="question-container">
-    <h2 id="question"></h2>
-    <ul id="answers"></ul>
-  </div>
 
-  <button id="submit-btn">Enviar respuesta</button>
 
-  <div id="result"></div>
+<div class="preguntas">
+    <div id="question-container">
+        <h1>Quiz de Conceptos</h1>
 
-  <script>
+        <h2 id="question"></h2>
+        <ul id="answers"></ul>
+
+        <div id="result"></div>
+
+        <button id="submit-btn" style="visibility: hidden" >Volver</button>
+
+    </div>
+
+</div>
+
+
+
+
+<script>
     const questions = [
-      {
-        question: "¿Cuál es la capital de Francia?",
-        answers: ["París", "Londres", "Madrid", "Berlín"],
-        correctAnswer: 0
-      },
-      {
-        question: "¿Cuál es el río más largo del mundo?",
-        answers: ["Amazonas", "Nilo", "Yangtsé", "Misisipi"],
-        correctAnswer: 1
-      },
-      {
-        question: "¿Quién pintó la Mona Lisa?",
-        answers: ["Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh", "Claude Monet"],
-        correctAnswer: 0
-      }
+        {
+            question: "¿Qué es como llevar una alcancia pero, a una escala más grande?",
+            answers: ["Administración Financiera", "Maletin", "Cuenta de dinero", "Bolsa"],
+            correctAnswer: 0
+        },
+        {
+            question: "¿Como se llama al dinero que se gana por hacer tareas?",
+            answers: ["Regalo", "Ingresos", "Propinas", "Gastos"],
+            correctAnswer: 1
+        },
+        {
+            question: "¿Cual es una parte importante de la administración financiera?",
+            answers: ["Comprar", "Estudiar", "Trabajar", "Ahorrar"],
+            correctAnswer: 3
+        }
     ];
 
     let currentQuestion = 0;
@@ -44,50 +48,53 @@
     const resultElement = document.getElementById('result');
 
     function loadQuestion() {
-      const question = questions[currentQuestion];
+        const question = questions[currentQuestion];
 
-      questionElement.textContent = question.question;
-      answersElement.innerHTML = "";
+        answersElement.innerHTML = "";
+        questionElement.textContent = question.question;
 
-      for (let i = 0; i < question.answers.length; i++) {
+        for (let i = 0; i < question.answers.length; i++) {
         const answer = question.answers[i];
         const li = document.createElement('li');
         li.textContent = answer;
         li.dataset.answerIndex = i;
         li.addEventListener('click', selectAnswer);
         answersElement.appendChild(li);
-      }
+        }
     }
 
     function selectAnswer(event) {
-      const selectedAnswerIndex = parseInt(event.target.dataset.answerIndex);
-      const question = questions[currentQuestion];
+        const selectedAnswerIndex = parseInt(event.target.dataset.answerIndex);
+        const question = questions[currentQuestion];
 
-      if (selectedAnswerIndex === question.correctAnswer) {
-        score++;
-      }
+        if (selectedAnswerIndex === question.correctAnswer) {
+            score++;
+        }
 
-      currentQuestion++;
+        currentQuestion++;
 
-      if (currentQuestion >= questions.length) {
-        showResult();
-      } else {
-        loadQuestion();
-      }
+        if (currentQuestion >= questions.length) {
+            showResult();
+        } else {
+            loadQuestion();
+        }
     }
+    document.getElementById('submit-btn').addEventListener('click', function() {
+    window.location.href = 'http://127.0.0.1:8000/juegos'; // Reemplaza 'https://www.tupagina.com' con la URL de tu página principal
+});
+
 
     function showResult() {
-      questionElement.style.display = 'none';
-      answersElement.style.display = 'none';
-      submitButton.style.display = 'none';
+        questionElement.style.display = 'none';
+        answersElement.style.display = 'none';
+        submitButton.style.visibility = 'visible';
 
-      resultElement.textContent = `¡Has finalizado el quiz! Tu puntuación es ${score} de ${questions.length}`;
+        resultElement.textContent = `¡Has finalizado el quiz! Tu puntuación es ${score} de ${questions.length}`;
     }
 
     loadQuestion();
-  </script>
-</body>
-</html>
+</script>
+
 
 
 

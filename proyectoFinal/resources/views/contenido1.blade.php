@@ -48,9 +48,12 @@
             <p class="contentP">Parte de la administración financiera también implica ser generoso y ayudar a los demás. Puedes donar una parte de tus ingresos o usar tu dinero para apoyar una causa que te importe, como donar juguetes a niños necesitados. ¡Recuerda que dar puede hacerte sentir muy bien!</p>
             </div>
         <div class="card">
+            <a class="btn-regresar" href="/ahorroF">Siguiente</a>
+        </div>
+        <div class="card">
             <a class="btn-regresar" href="/dashboard">Regresar</a>
+        </div>
 
-    </div>
 
 
 
