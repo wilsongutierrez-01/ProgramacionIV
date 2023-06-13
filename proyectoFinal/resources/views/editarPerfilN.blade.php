@@ -86,7 +86,7 @@
         })
         .then(response => response.text())
         .then(message => {
-          alert(message);
+        //   alert(message);
           form.reset();
         })
         .catch(error => console.error(error));

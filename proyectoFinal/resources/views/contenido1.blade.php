@@ -4,13 +4,16 @@
 
 
     <div class="containerC1">
-        <h1>¡Aprende sobre la administración financiera!</h1>
+        <div class="tittle">
+            <h1>¡Aprende sobre la administración financiera!</h1>
+        </div>
 
         <br>
 
         <div class="mediaV">
 
-            <video src="/videos/video.mp4" controls autoplay>
+            <video controls >
+                <source src="/videos/video.mp4" type="video/mp4">
                 Tu navegador no soporta el elemento de video.
             </video>
 
@@ -50,9 +53,9 @@
         <div class="card">
             <a class="btn-regresar" href="/ahorroF">Siguiente</a>
         </div>
-        <div class="card">
+        {{-- <div class="card">
             <a class="btn-regresar" href="/dashboard">Regresar</a>
-        </div>
+        </div> --}}
 
 
 
