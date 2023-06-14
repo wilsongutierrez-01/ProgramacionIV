@@ -42,4 +42,13 @@ class UserController extends Controller
 
     }
 
+    public function chatInfo()
+    {
+        //get data user
+        $user = auth()->user();
+
+        //return a view with data user
+        return view('dashboard')->with('user',$user);
+
+    }
 }

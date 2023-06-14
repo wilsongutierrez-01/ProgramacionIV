@@ -35,6 +35,7 @@ Route::get('/dashboard', function(){
 Route::get('/perfil', [UserController::class, 'showProfile'])->name('perfil');
 Route::get('/perfilInfantil', [UserController::class, 'showProfileInfantil'])->name('editarPerfilN');
 Route::get('/showInfo', [UserController::class, 'showInfo'])->name('infantilPerfl');
+Route::get('/chat', [UserController::class, 'chatInfo'])->name('dashboard');
 
 
 Route::get('/registrar', function(){

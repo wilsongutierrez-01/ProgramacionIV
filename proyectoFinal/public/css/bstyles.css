@@ -54,3 +54,9 @@ button {
 button:hover {
     background-color: #FF1493;
 }
+
+img {
+    width: 200px;
+    height: 200px;
+    visibility: hidden;
+}

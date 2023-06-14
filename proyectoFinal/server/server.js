@@ -188,7 +188,7 @@ app.post('/kid/save', upload.single('image'), async (req, res) => {
     }
 
       // Devolver una respuesta al cliente
-        res.send('Información guardada correctamente');
+        res.send('ok');
     } catch (error) {
         console.error('Error al guardar la información:', error);
         res.status(500).send('Error al guardar la información');

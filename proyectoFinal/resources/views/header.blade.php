@@ -5,6 +5,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+
 </head>
 <body>
 <!-- header.blade.php -->
@@ -22,11 +29,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    {{-- <a class="nav-link" href="/dashboard">Chat</a> --}}
                     <a class="nav-link" href="/conten1">Contenido 1</a>
                     <a class="nav-link" href="/conten2">Contenido 2</a>
                     <a class="nav-link" href="/conten3">Contenido 3</a>
                     <a class="nav-link" href="/juegos">Juegos</a>
+                    <a class="nav-link" href="/chat">Chat</a>
                     <a class="nav-link" @click="abrirFormulario('inscripcion')" href="#">Acerca de</a>
                 </div>
             </div>

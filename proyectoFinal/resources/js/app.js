@@ -8,6 +8,9 @@
 import './bootstrap';
 import { createApp } from 'vue';
 import inicio from './components/InicioComponent.vue';
+import 'alertifyjs/build/css/alertify.css';
+import 'alertifyjs/build/css/themes/default.css';
+import alertify from 'alertifyjs';
 // import docente from './components/DocenteComponent.vue';
 // import materia from './components/MateriaComponent.vue';
 // import matricula from './components/MatriculaComponent.vue';
