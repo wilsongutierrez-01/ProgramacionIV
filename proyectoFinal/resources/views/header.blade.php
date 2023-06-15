@@ -34,7 +34,7 @@
                     <a class="nav-link" href="/conten3">Contenido 3</a>
                     <a class="nav-link" href="/juegos">Juegos</a>
                     <a class="nav-link" href="/chat">Chat</a>
-                    <a class="nav-link" @click="abrirFormulario('inscripcion')" href="#">Acerca de</a>
+                    <a class="nav-link"  href="/acercade">Acerca de</a>
                 </div>
             </div>
         </div>

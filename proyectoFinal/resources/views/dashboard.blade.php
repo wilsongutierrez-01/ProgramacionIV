@@ -1,7 +1,7 @@
 
 @include('header')
 <input type="text" id="idProfile" name="idProfile" style="display: none" value="{{$user->external_id}}">
-<input type="text" class="form-control" id="lastname" name="lastname"  readonly>
+{{-- <input type="text" class="form-control" id="lastname" name="lastname"  readonly> --}}
 
 
 

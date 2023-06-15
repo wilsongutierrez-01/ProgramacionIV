@@ -64,8 +64,9 @@ Route::get('/ePerfilKid', function(){
     return view('editarPerfilN');
 });
 
-//****************************************** */
-
+Route::get('/acercade', function(){
+    return view('acercade');
+    });
 // contoll user information
 
 
